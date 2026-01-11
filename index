@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <link rel="stylesheet" href="css/login.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title data-i18n="brand_name">Levent Marine Electro Technical Services</title>
+  <meta name="description" content="Marine elektro-teknik servis, test ve sertifikasyon hizmetleri.">
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body id="top">
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container headerInner">
+    <a class="brand" href="#top">
+      <img src="assets/logo.png" alt="Levent logo" />
+      <div>
+        <div class="name" data-i18n="brand_name">Levent Marine Electro-Technical Services LLC</div>
+        <span class="tag" data-i18n="brand_tag">leventmarinetech.com</span>
+      </div>
+    </a>
+
+    <div class="nav">
+  <a href="#services" data-i18n="nav_services">Services</a>
+  <a href="#certification" data-i18n="nav_certification">Testing & Certification</a>
+  <a href="profile.html" data-i18n="nav_about">About</a>
+  <a href="#contact" data-i18n="nav_contact">Contact</a>
+
+  <button class="lang" id="btnLangEn">🇺🇸 EN</button>
+  <button class="lang" id="btnLangTr">🇹🇷 TR</button>
+</div>
+
+  </div>
+</header>
+
+<!-- CERTIFICATION ROTATOR -->
+<section class="heroModern" id="certification">
+  <div class="container">
+    <div class="heroGlass">
+
+      <!-- LEFT -->
+      <div class="heroLeft">
+        <div class="heroBadge" data-i18n="cert_badge">Test & Sertifikasyon</div>
+
+        <h1 class="heroTitle" data-i18n="cert_title">
+          Test & Sertifika Hizmetleri
+        </h1>
+
+        <p class="heroSubtitle" data-i18n="cert_subtitle">
+          Hizmet verilen gemilerde kullanılan tüm ölçüm ve test ekipmanları kalibrasyon sertifikalı olup,
+          yürütülen çalışmalar class denetimlerinde kabul gören yöntem ve dokümantasyon ile desteklenir.
+        </p>
+
+        <div class="heroButtons">
+          <a href="#contact" class="btnPrimary" data-i18n="cert_btn_request">
+            Test & Sertifika Talebi Oluştur
+          </a>
+          <button class="btnPrimary" id="btnAuthorizedLogin">
+  Yetkili Kullanıcı Girişi
+</button>
+<p class="loginInfo" data-i18n="login_info"></p>
+
+<p class="loginInfo">
+  This panel provides secure access to all vessel-based test records performed by our team. 
+  Authorized users can view test dates, device serial numbers, certificates, and upcoming 
+  test deadlines. Designed to ensure full transparency for class surveys and internal audits.
+</p>
+        </div>
+      </div>
+
+      <!-- RIGHT ROTATOR -->
+      <div class="heroRight">
+        <div class="heroWorkCard">
+          <div class="heroWorkImage">
+            <img id="certImage" src="assets/cert/acb-mccb-test.jpg" alt="">
+          </div>
+
+          <div class="heroWorkInfo">
+            <div id="certTitle">ACB / MCCB Testleri</div>
+            <div id="certDesc">
+              SVERKER / SKAVER sistemi ile mekanik, elektriksel ve koruma fonksiyon testleri.
+            </div>
+          </div>
+
+          <div class="heroProgress">
+            <div id="certProgressBar"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MAIN HERO ROTATOR -->
+<section class="heroModern" id="services">
+  <div class="container">
+    <div class="heroGlass">
+
+      <!-- LEFT -->
+      <div class="heroLeft">
+        <div class="heroBadge" data-i18n="hero_badge">Marine Electro-Technical Services</div>
+
+        <h1 class="heroTitle" data-i18n="hero_title">
+          Class Ready <br> Electro-Technical Services
+        </h1>
+
+        <p class="heroSubtitle" data-i18n="hero_subtitle">
+          Arıza tespiti, bakım, devreye alma ve class denetimlerine uygun teknik servis hizmetleri.
+        </p>
+
+        <div class="heroServiceRotator">
+          <span id="heroServiceIcon">⚡</span>
+          <span id="heroServiceText">Elektrik & Güç Sistemleri</span>
+        </div>
+
+        <div class="heroButtons">
+          <a href="#contact" class="btnPrimary" data-i18n="btn_service_request">
+            Servis Talebi Oluştur
+          </a>
+        </div>
+
+        <div class="heroSupportBadge" data-i18n="hero_support">
+          7/24 Remote & Onboard Support
+        </div>
+      </div>
+
+      <!-- RIGHT ROTATOR -->
+      <div class="heroRight">
+        <div class="heroWorkCard">
+          <div class="heroWorkImage">
+            <img id="workImage" src="assets/works/motor-overhaul.jpg" alt="">
+          </div>
+
+          <div class="heroWorkInfo">
+            <div id="workTitle">Motor Overhaul</div>
+            <div id="workDesc">
+              Inspection, overhaul, alignment, load testing and commissioning.
+            </div>
+          </div>
+
+          <div class="heroProgress">
+            <div id="heroProgressBar"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="container">
+    <p data-i18n="contact_desc">
+      Proje, arıza veya denetim öncesi ihtiyaçlarınız için, USA ve Türkiye lokasyonlarından
+      remote veya onboard destek sağlanır.
+    </p>
+
+    <div class="contactWrapper">
+
+      <!-- LEFT -->
+      <div class="contactInfo">
+        <div class="contactInfoBlock">
+          <h3 data-i18n="contact_usa_title">USA</h3>
+          <p data-i18n="contact_usa_desc">
+            Wyoming Registered Agent Services LLC<br>
+            32 N Gould St, Sheridan, WY 82801<br>
+            Tel: <a href="tel:+16193840403">+1 619 384 04 03</a>
+          </p>
+        </div>
+
+        <div class="contactInfoBlock">
+          <h3 data-i18n="contact_tr_title">Türkiye</h3>
+          <p data-i18n="contact_tr_desc">
+            Velibaba Mah. No:1<br>
+            Pendik / İstanbul<br>
+            Tel: <a href="tel:+905376507776">+90 537 650 77 76</a>
+          </p>
+        </div>
+
+        <div class="contactButtons">
+          <a class="btnPrimary" href="https://wa.me/16193840403" target="_blank">
+            💬 <span data-i18n="btn_whatsapp_us">WhatsApp (USA)</span>
+          </a>
+
+          <a class="btnGhost" href="https://wa.me/905376507776" target="_blank">
+            💬 <span data-i18n="btn_whatsapp_tr">WhatsApp (TR)</span>
+          </a>
+
+          <a class="btnGhost" href="mailto:info@leventmarinetech.com">
+            ✉️ <span data-i18n="btn_email">Email</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT MAP -->
+      <div class="contactMap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.684333!2d-106.9800!3d44.7972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5334f91a1f000001%3A0x4b7ce!2sSheridan%2C%20WY!5e0!3m2!1str!2sus!4v1700000000000"
+          style="border:0;" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <a href="profile.html" class="footerLink" data-i18n="footer_profile">
+    Professional Background & Qualifications
+  </a>
+  <span data-i18n="footer_rights">
+    © 2026 Levent Marine Electro Technical Services. Tüm hakları saklıdır.
+  </span>
+</footer>
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="loginModal">
+  <div class="loginBox">
+    <h2>Yetkili Kullanıcı Girişi</h2>
+
+    <!-- 1) Giriş Türü -->
+    <label>Giriş Türü</label>
+    <select id="loginType">
+      <option value="CLASS">Class Access</option>
+      <option value="COMPANY">Company Representative</option>
+      <option value="ADMIN">ADMIN</option>
+    </select>
+
+    <!-- 2) Class listesi (sadece CLASS seçilince görünür) -->
+    <div id="classSelectBox" style="display:none; margin-top:10px;">
+      <label>Class Seç</label>
+      <select id="loginClass">
+        <option value="TL">Türk Loydu (TL)</option>
+        <option value="BV">Bureau Veritas (BV)</option>
+        <option value="DNV">DNV</option>
+        <option value="ABS">ABS</option>
+        <option value="LR">Lloyd’s Register (LR)</option>
+        <option value="RINA">RINA</option>
+        <option value="ClassNK">ClassNK</option>
+      </select>
+    </div>
+
+    <!-- 3) Company Representative (sadece COMPANY seçilince görünür) -->
+    <div id="companyInfo" style="display:none; margin-top:10px;">
+      <p style="font-size:14px; opacity:0.8;">
+        Company Representative seçildiğinde şirket adı şifre üzerinden otomatik belirlenir.
+      </p>
+    </div>
+
+    <!-- 4) Parola -->
+    <label style="margin-top:10px;">Parola</label>
+    <input type="password" id="loginPass" placeholder="Parola">
+
+    <!-- Buttons -->
+    <button id="loginSubmit" class="btnPrimary">Giriş Yap</button>
+    <button id="loginClose" class="btnGhost">Kapat</button>
+
+    <p id="loginError" class="loginError"></p>
+  </div>
+</div>
+
+<script src="js/global.js"></script>
+<script src="js/home.js"></script>
+<script src="js/login.js"></script>
+
+</body>
+</html>
