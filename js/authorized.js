@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     `Authorized account: ${currentUser}`;
 
   // 3) Kayıtları backend'den çek
-  fetch("http://localhost:3000/api/getRecords")
+  fetch("https://levent-backend-zxel.onrender.com/api/getRecords")
+
     .then(res => res.json())
     .then(data => {
       shipRecords = data || {};
@@ -252,7 +253,8 @@ function saveRecordFromModal() {
   };
 
   // Yeni mi, düzenleme mi?
-  const url = "http://localhost:3000/api/saveRecord";
+ const url = "https://levent-backend-zxel.onrender.com/api/saveRecord";
+
 
   fetch(url, {
     method: "POST",
@@ -290,7 +292,8 @@ function saveRecordFromModal() {
 function deleteRecord(company, id) {
   if (!confirm("Bu kaydı silmek istediğinize emin misiniz?")) return;
 
-  fetch("http://localhost:3000/api/deleteRecord", {
+  fetch("https://levent-backend-zxel.onrender.com/api/deleteRecord", {
+
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ company, id })
@@ -317,7 +320,8 @@ function uploadPDF(callback) {
   const formData = new FormData();
   formData.append("pdf", fileInput.files[0]);
 
-  fetch("http://localhost:3000/api/uploadCert", {
+  fetch("https://levent-backend-zxel.onrender.com/api/uploadCert", {
+
     method: "POST",
     body: formData
   })
@@ -330,3 +334,4 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
+
