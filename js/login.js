@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "RINA": "rina666",
     "ClassNK": "nk111",
 
-    // Company Representative → sadece şifre ile belirleniyor
+    // Company Representative
     "COMPANY": "company2025",
 
     // Admin
@@ -18,8 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const modal = document.getElementById("loginModal");
-  const btnSubmit = document.getElementById("loginSubmit");
+  const btnOpen = document.getElementById("authorizedBtn");   // ✔ DOĞRU ID
   const btnClose = document.getElementById("loginClose");
+  const btnSubmit = document.getElementById("loginSubmit");
+
+  // Modal aç
+  btnOpen.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
 
   // Modal kapat
   btnClose.addEventListener("click", () => {
@@ -29,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Giriş yap
   btnSubmit.addEventListener("click", () => {
 
-    // 🔥 Eski hata mesajını temizle
+    // Eski hata mesajını temizle
     document.getElementById("loginError").textContent = "";
 
     const loginType = document.getElementById("loginType").value;
@@ -65,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
 });
+
 
 
