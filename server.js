@@ -12,12 +12,13 @@ const DATA_PATH = path.join(__dirname, "data", "shipRecords.json");
 const upload = multer({ dest: path.join(__dirname, "uploads") });
 
 /* -----------------------------------------
-   LOGIN ENDPOINT (EKLENDİ)
+   LOGIN ENDPOINT (EKLENDİ – diğer kodlara dokunulmadı)
 ----------------------------------------- */
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
 
   const validUsers = {
+    // CLASS users
     "TL": "tl123",
     "BV": "bv222",
     "DNV": "dnv333",
@@ -25,7 +26,15 @@ app.post("/api/login", (req, res) => {
     "LR": "lr555",
     "RINA": "rina666",
     "ClassNK": "nk111",
-    "COMPANY": "company2025",
+
+    // COMPANY users
+    "TP Offshore": "company2025",
+    "MEDLOG": "company2025",
+    "Reederei NORD": "company2025",
+    "Polaris": "company2025",
+    "Levent Marine": "company2025",
+
+    // ADMIN
     "ADMIN": "admin2025"
   };
 
@@ -104,5 +113,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Backend çalışıyor: " + PORT);
 });
-
 
