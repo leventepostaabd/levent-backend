@@ -53,6 +53,10 @@ app.post("/api/uploadCert", upload.single("pdf"), (req, res) => {
   res.json({ success: true, filename: newName });
 });
 
-app.listen(3000, () => {
-  console.log("Backend çalışıyor: http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Backend çalışıyor: " + PORT);
 });
+
+
