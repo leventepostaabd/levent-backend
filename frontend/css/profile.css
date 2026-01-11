@@ -1,0 +1,100 @@
+/* =========================
+   PROFILE CARD
+========================= */
+
+.profileCard {
+  background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 26px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.profileCard h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.profileCard h2 {
+  font-size: 22px;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.profileText {
+  opacity: 0.85;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* =========================
+   COMPANY GRID
+========================= */
+
+.companyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.companyGrid span {
+  background: rgba(255,255,255,0.06);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  transition: 0.25s ease;
+}
+
+.companyGrid span:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+/* =========================
+   CERTIFICATIONS
+========================= */
+
+.certList {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.certItem h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.certUl {
+  margin-left: 18px;
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.backBtn {
+  display: inline-block;
+  margin-top: 40px;
+  font-size: 15px;
+  padding: 14px 22px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+  .profileCard {
+    padding: 28px;
+  }
+
+  .profileCard h1 {
+    font-size: 26px;
+  }
+}
