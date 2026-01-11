@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Giriş yap
   btnSubmit.addEventListener("click", () => {
+
+    // 🔥 Eski hata mesajını temizle
+    document.getElementById("loginError").textContent = "";
+
     const loginType = document.getElementById("loginType").value;
     const loginPass = document.getElementById("loginPass").value;
 
@@ -59,4 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+
+});
+
 
