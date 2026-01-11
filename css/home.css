@@ -1,0 +1,374 @@
+/* =========================
+   MODERN HERO
+========================= */
+
+.heroModern {
+  padding: 60px 0;
+  position: relative;
+}
+
+.heroModern .container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.heroGlass {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 40px;
+  padding: 40px;
+  border-radius: 28px;
+  background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+/* LEFT SIDE */
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.heroBadge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.heroTitle {
+  font-size: 42px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.heroSubtitle {
+  font-size: 16px;
+  opacity: 0.85;
+  max-width: 480px;
+}
+
+.heroServiceRotator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+/* RIGHT SIDE */
+.heroRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* FIXED HEIGHT CARD */
+.heroWorkCard {
+  width: 100%;
+  background: rgba(15,23,42,0.9);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(148,163,184,0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  display: grid;
+  grid-template-rows: 260px auto 4px;
+  height: 420px; /* SABİT YÜKSEKLİK */
+}
+
+.heroWorkImage {
+  height: 260px;
+  overflow: hidden;
+}
+
+.heroWorkImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroWorkInfo {
+  padding: 16px 18px 14px;
+  min-height: 120px; /* içerik değişse bile sabit */
+}
+
+.heroWorkInfo #workTitle,
+.heroWorkInfo #certTitle {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.heroWorkInfo #workDesc,
+.heroWorkInfo #certDesc {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* PROGRESS BAR – HERO & CERT */
+.heroProgress {
+  height: 3px;
+  background: rgba(255,255,255,0.15);
+}
+
+#heroProgressBar,
+#certProgressBar {
+  height: 100%;
+  width: 0%;
+  background: #22d3ee; /* ince mavi-yeşil çizgi */
+  transition: width 3s linear;
+}
+
+/* SUPPORT BADGE */
+.heroSupportBadge {
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: 0.85;
+  background: rgba(255,255,255,0.10);
+  padding: 6px 12px;
+  border-radius: 10px;
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* =========================
+   CONTACT WRAPPER
+========================= */
+
+.contactWrapper {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 30px;
+  background: rgba(15,23,42,0.85);
+  padding: 30px;
+  border-radius: 22px;
+  border: 1px solid rgba(148,163,184,0.35);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contactInfoBlock h3 {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.contactInfoBlock p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.contactInfoBlock a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.contactInfoBlock a:hover {
+  text-decoration: underline;
+}
+
+.contactButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.contactMap iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  border-radius: 16px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .heroGlass {
+    grid-template-columns: 1fr;
+    padding: 28px;
+  }
+
+  .heroTitle {
+    font-size: 32px;
+  }
+
+  .contactWrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .heroTitle {
+    font-size: 26px;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .contactButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* =========================
+   CERTIFICATE CONTENT BLOCKS
+========================= */
+
+.certContent {
+  padding: 60px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.certRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 40px;
+  padding: 40px;
+  margin-bottom: 40px;
+  border-radius: 28px;
+  background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.certLeft h3 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.certText,
+.certTextTr {
+  font-size: 15px;
+  opacity: 0.85;
+  margin-bottom: 6px;
+  max-width: 480px;
+}
+
+.certRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.certRotator {
+  width: 100%;
+  height: 260px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.certRotator img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.certRotator img.active {
+  opacity: 1;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .certRow {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================
+   CERTIFICATE CONTENT BLOCKS
+========================= */
+
+.certContent {
+  padding: 60px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.certRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 40px;
+  padding: 40px;
+  margin-bottom: 40px;
+  border-radius: 28px;
+  background: rgba(15,23,42,0.85);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.certLeft h3 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.certText,
+.certTextTr {
+  font-size: 15px;
+  opacity: 0.85;
+  margin-bottom: 6px;
+  max-width: 480px;
+}
+
+.certRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.certRotator {
+  width: 100%;
+  height: 260px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.certRotator img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.certRotator img.active {
+  opacity: 1;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .certRow {
+    grid-template-columns: 1fr;
+  }
+}

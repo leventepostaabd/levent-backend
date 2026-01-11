@@ -1,0 +1,40 @@
+.acb-page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 16px;
+}
+
+.acb-page .card {
+  margin-bottom: 18px;
+}
+
+.cert-images {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto 18px;
+}
+
+.cert-img-box {
+  flex: 1;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.03);
+  border-radius: 14px;
+}
+
+.cert-img-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* MOBILE */
+@media (max-width: 800px) {
+  .cert-images {
+    flex-direction: column;
+  }
+}
