@@ -18,16 +18,22 @@ app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
 
   const validUsers = {
-    "ADMIN": "1234",
-    "TP Offshore": "1234",
-    "Levent Marine": "1234"
+    "TL": "tl123",
+    "BV": "bv222",
+    "DNV": "dnv333",
+    "ABS": "abs444",
+    "LR": "lr555",
+    "RINA": "rina666",
+    "ClassNK": "nk111",
+    "COMPANY": "company2025",
+    "ADMIN": "admin2025"
   };
 
   if (validUsers[username] && validUsers[username] === password) {
     return res.json({ success: true });
   }
 
-  return res.status(401).json({ success: false, message: "Geçersiz kullanıcı" });
+  return res.status(401).json({ success: false });
 });
 
 /* -----------------------------------------
@@ -98,4 +104,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Backend çalışıyor: " + PORT);
 });
+
 
