@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title data-i18n="profile_title">Professional Background & Qualifications</title>
+  <meta name="description" content="Professional background, certifications and qualifications." />
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+
+<!-- HEADER (Aynen Korundu) -->
+<div class="header">
+  <div class="container headerInner">
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" alt="Levent logo" />
+      <div>
+        <div class="name">Levent Marine Electro Technical Services</div>
+        <span class="tag">leventmarinetech.com</span>
+      </div>
+    </a>
+
+    <div class="nav">
+  <a href="index.html#services" data-i18n="nav_services">Services</a>
+  <a href="index.html#certification" data-i18n="nav_certification">Testing & Certification</a>
+  <a href="profile.html" data-i18n="nav_about">About</a>
+  <a href="index.html#contact" data-i18n="nav_contact">Contact</a>
+
+  <button class="lang" id="btnLangEn">🇺🇸 EN</button>
+  <button class="lang" id="btnLangTr">🇹🇷 TR</button>
+</div>
+
+  </div>
+</div>
+
+<!-- MAIN PROFILE CARD -->
+<div class="container section">
+  <div class="profileCard">
+
+    <h1 data-i18n="profile_title">Professional Background & Qualifications</h1>
+
+    <!-- BACKGROUND -->
+    <h2 data-i18n="profile_background_title">Professional Background</h2>
+    <p class="profileText" data-i18n="profile_background_text">
+      <!-- TR/EN metin global.js içinde -->
+    </p>
+
+    <!-- COMPANIES -->
+    <h2 data-i18n="profile_companies_title">Companies Served</h2>
+    <div class="companyGrid">
+      <span>TP Offshore Contracting (TP OTC)</span>
+      <span>Polaris Denizcilik A.Ş.</span>
+      <span>Bright Denizcilik Ltd. Şti.</span>
+      <span>Çebi Kaptan Denizcilik A.Ş.</span>
+      <span>MEDLOG (MSC Group)</span>
+      <span>Reederei NORD GmbH & Co. KG</span>
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <h2 data-i18n="profile_cert_title">Certifications & Qualifications</h2>
+
+    <div class="certList">
+      <div class="certItem">
+        <h3 data-i18n="profile_cert_core">Core Certification</h3>
+        <p data-i18n="profile_cert_core_text">Electro-Technical Officer (ETO) — STCW Reg. III/6</p>
+      </div>
+
+      <div class="certItem">
+        <h3 data-i18n="profile_cert_academic">Academic Qualification</h3>
+        <p data-i18n="profile_cert_academic_text">Control Systems Technology — University Degree</p>
+      </div>
+
+      <div class="certItem">
+        <h3 data-i18n="profile_cert_special">Special Recognition</h3>
+        <p data-i18n="profile_cert_special_text">Blue Homeland Service Certificate — Issued by TP Offshore</p>
+      </div>
+
+      <div class="certItem">
+        <h3 data-i18n="profile_cert_tech">Technical & Safety Certifications</h3>
+        <ul class="certUl">
+          <li>Advanced Fire Fighting — STCW Reg. VI/3</li>
+          <li>Medical First Aid — STCW Reg. VI/4-1</li>
+          <li>Basic Safety Training (STCW) — STCW Reg. VI/1</li>
+          <li>High Voltage Operations (Up to 1000 V) — STCW Reg. III/6</li>
+          <li>Gas Tanker Familiarization — STCW Reg. V/1-2</li>
+          <li>Oil & Chemical Tanker Familiarization — STCW Reg. V/1-1</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- BACK BUTTON -->
+    <a href="index.html" class="btnPrimary backBtn" data-i18n="profile_back_btn">
+      ← Ana Sayfaya Dön
+    </a>
+
+  </div>
+</div>
+
+<footer class="footer">
+  © 2026 Levent Marine Electro Technical Services.
+</footer>
+
+<script src="js/global.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>
+
