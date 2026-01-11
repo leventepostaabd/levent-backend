@@ -1,26 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Kullanıcı adı → parola eşleşmeleri
+  // Parola eşleşmeleri
   const passwords = {
-    "TP Offshore": "tp123",
-    "MEDLOG": "med456",
-    "Reederei NORD": "nord789",
-    "Polaris": "pol999",
-    "ClassNK": "nk111",
+    "TL": "tl123",
     "BV": "bv222",
     "DNV": "dnv333",
+    "ABS": "abs444",
+    "LR": "lr555",
+    "RINA": "rina666",
+    "ClassNK": "nk111",
+
+    // Company Representative → sadece şifre ile belirleniyor
+    "COMPANY": "company2025",
+
+    // Admin
     "ADMIN": "admin2025"
   };
 
   const modal = document.getElementById("loginModal");
-  const btnOpen = document.getElementById("btnAuthorizedLogin");
-  const btnClose = document.getElementById("loginClose");
   const btnSubmit = document.getElementById("loginSubmit");
-
-  // Modal aç
-  btnOpen.addEventListener("click", () => {
-    modal.style.display = "flex";
-  });
+  const btnClose = document.getElementById("loginClose");
 
   // Modal kapat
   btnClose.addEventListener("click", () => {
@@ -29,18 +28,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Giriş yap
   btnSubmit.addEventListener("click", () => {
-    const user = document.getElementById("loginUser").value;
-    const pass = document.getElementById("loginPass").value;
+    const loginType = document.getElementById("loginType").value;
+    const loginPass = document.getElementById("loginPass").value;
 
-    if (passwords[user] === pass) {
-      // 🔥 KRİTİK NOKTA: authorizedUser kaydediliyor
-      localStorage.setItem("authorizedUser", user);
+    let selectedUser = "";
 
-      // 🔥 KRİTİK NOKTA: authorized.html'e yönlendirme
+    if (loginType === "CLASS") {
+      selectedUser = document.getElementById("loginClass").value;
+    } 
+    else if (loginType === "COMPANY") {
+      selectedUser = "COMPANY";
+    } 
+    else if (loginType === "ADMIN") {
+      selectedUser = "ADMIN";
+    }
+
+    // Parola kontrolü
+    if (passwords[selectedUser] === loginPass) {
+
+      // Yetkili kullanıcıyı kaydet
+      localStorage.setItem("authorizedUser", selectedUser);
+
+      // authorized.html'e yönlendir
       window.location.href = "authorized.html";
+
     } else {
       document.getElementById("loginError").textContent =
-        "Hatalı kullanıcı adı veya parola";
+        "Hatalı parola. Lütfen tekrar deneyin.";
     }
   });
 
