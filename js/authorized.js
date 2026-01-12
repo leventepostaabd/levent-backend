@@ -129,9 +129,10 @@ function renderTable(records) {
       <td>${rec.serial || ""}</td>
       <td>${
         rec.certificate
-          ? `<a href="uploads/${rec.certificate}" target="_blank">${rec.certificate}</a>`
+          ? `<a href="upload/${rec.certificate}" target="_blank">${rec.certificate}</a>`
           : ""
       }</td>
+
       <td>${rec.nextTest || ""}</td>
       <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
       ${
@@ -363,5 +364,6 @@ document.getElementById("saveCompany").addEventListener("click", () => {
   document.getElementById("newCompanyInput").value = "";
   document.getElementById("newCompanyBox").style.display = "none";
 });
+
 
 
