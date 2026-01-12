@@ -58,12 +58,13 @@ function initForUser() {
   const panel = document.getElementById("adminPanel");
 
   if (currentUser === "ADMIN") {
-    if (panel) panel.style.display = "block";
+    panel.style.display = "block";
     setupAdminPanel();
   } else {
-    if (panel) panel.style.display = "none";
+    panel.style.display = "none";
   }
 }
+
 
 
 // Sadece ilgili kullanıcının göreceği kayıtları topla
@@ -339,6 +340,7 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
+
 
 
 
