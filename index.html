@@ -247,11 +247,17 @@
     </div>
 
     <!-- 3) Company Representative (sadece COMPANY seçilince görünür) -->
-    <div id="companyInfo" style="display:none; margin-top:10px;">
-      <p style="font-size:14px; opacity:0.8;">
-        Company Representative seçildiğinde şirket adı şifre üzerinden otomatik belirlenir.
-      </p>
-    </div>
+ <div id="companySelectBox" style="display:none; margin-top:10px;">
+  <label>Firma Seç</label>
+  <select id="loginCompany">
+    <option value="TP Offshore">TP Offshore</option>
+    <option value="MEDLOG">MEDLOG</option>
+    <option value="Reederei NORD">Reederei NORD</option>
+    <option value="Polaris">Polaris</option>
+    <option value="Levent Marine">Levent Marine</option>
+  </select>
+</div>
+
 
     <!-- 4) Parola -->
     <label style="margin-top:10px;">Parola</label>
