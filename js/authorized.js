@@ -6,6 +6,15 @@ let loginType = null;
 let editRecordInfo = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+// CLASS veya COMPANY ise admin butonlarını anında kaldır
+const loginTypeLS = localStorage.getItem("loginType");
+if (loginTypeLS !== "ADMIN") {
+    const btnNew = document.getElementById("btnNewRecord");
+    if (btnNew) btnNew.remove();
+
+    const modal = document.getElementById("recordModal");
+    if (modal) modal.remove();
+}
 
   // 1) Giriş kontrolü
   currentUser = localStorage.getItem("authorizedUser");
@@ -345,4 +354,5 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
+
 
