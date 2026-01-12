@@ -1,95 +1,84 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  const modal = document.getElementById("loginModal");
-  const btnOpen = document.getElementById("authorizedBtn");
-  const btnClose = document.getElementById("loginClose");
-  const btnSubmit = document.getElementById("loginSubmit");
-  const API = "https://levent-backend-zxel.onrender.com";  // Backend URL
-
-
-  // Login type değişince ilgili alanları göster/gizle
-document.getElementById("loginType").addEventListener("change", function () {
-  const type = this.value;
-
-  const classBox = document.getElementById("classSelectBox");
-  const companyBox = document.getElementById("companyInfo");
-
-  if (type === "CLASS") {
-    classBox.style.display = "block";
-    companyBox.style.display = "none";
-  } 
-  else if (type === "COMPANY") {
-    classBox.style.display = "none";
-    companyBox.style.display = "block";
-  } 
-  else {
-    classBox.style.display = "none";
-    companyBox.style.display = "none";
-  }
-});
-
-  // Modal aç
-  btnOpen.addEventListener("click", () => {
-    modal.style.display = "flex";
-  });
-
-  // Modal kapat
-  btnClose.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  // Giriş yap
-  btnSubmit.addEventListener("click", () => {
-
-    document.getElementById("loginError").textContent = "";
-
-    const loginType = document.getElementById("loginType").value;
-    const loginPass = document.getElementById("loginPass").value;
-
-    let selectedUser = "";
-
-    if (loginType === "CLASS") {
-      selectedUser = document.getElementById("loginClass").value;
-    } 
-    else if (loginType === "COMPANY") {
-      selectedUser = document.getElementById("loginCompany").value;
-    } 
-    else if (loginType === "ADMIN") {
-      selectedUser = "ADMIN";
+    // Bu sayfada login modalı yoksa login.js çalışmasın
+    if (!document.getElementById("loginModal")) {
+        return;
     }
 
-    // Backend'e istek gönder
-    fetch(`${API}/api/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: selectedUser,
-        password: loginPass
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        localStorage.setItem("authorizedUser", selectedUser);
-        window.location.href = "authorized.html";
-      } else {
-        document.getElementById("loginError").textContent =
-          "Hatalı giriş bilgileri";
-      }
-    })
-    .catch(() => {
-      document.getElementById("loginError").textContent =
-        "Sunucuya bağlanılamadı.";
+    const loginTypeEl = document.getElementById("loginType");
+    const classSelectBox = document.getElementById("classSelectBox");
+    const companySelectBox = document.getElementById("companySelectBox");
+    const loginClassEl = document.getElementById("loginClass");
+    const loginCompanyEl = document.getElementById("loginCompany");
+    const loginPassEl = document.getElementById("loginPass");
+    const loginErrorEl = document.getElementById("loginError");
+    const loginSubmit = document.getElementById("loginSubmit");
+    const loginClose = document.getElementById("loginClose");
+
+    // Giriş türü değişince ilgili alanları göster/gizle
+    loginTypeEl.addEventListener("change", () => {
+        const type = loginTypeEl.value;
+
+        if (type === "CLASS") {
+            classSelectBox.style.display = "block";
+            companySelectBox.style.display = "none";
+        } 
+        else if (type === "COMPANY") {
+            classSelectBox.style.display = "none";
+            companySelectBox.style.display = "block";
+        } 
+        else {
+            classSelectBox.style.display = "none";
+            companySelectBox.style.display = "none";
+        }
     });
 
-  });
+    // Modal kapatma
+    loginClose.addEventListener("click", () => {
+        document.getElementById("loginModal").style.display = "none";
+    });
+
+    // Giriş butonu
+    loginSubmit.addEventListener("click", () => {
+        const type = loginTypeEl.value;
+        const pass = loginPassEl.value.trim();
+        let selectedUser = null;
+
+        // CLASS LOGIN
+        if (type === "CLASS") {
+            selectedUser = loginClassEl.value; // TL, BV, DNV...
+            if (pass !== "class2025") {
+                loginErrorEl.textContent = "Hatalı parola.";
+                return;
+            }
+        }
+
+        // COMPANY LOGIN
+        else if (type === "COMPANY") {
+            selectedUser = loginCompanyEl.value; // TP Offshore, MEDLOG...
+            if (pass !== "company2025") {
+                loginErrorEl.textContent = "Hatalı parola.";
+                return;
+            }
+        }
+
+        // ADMIN LOGIN
+        else if (type === "ADMIN") {
+            selectedUser = "ADMIN";
+            if (pass !== "admin2025") {
+                loginErrorEl.textContent = "Hatalı parola.";
+                return;
+            }
+        }
+
+        // Başarılı giriş → kullanıcıyı kaydet
+        localStorage.setItem("authorizedUser", selectedUser);
+
+        // Modal kapat
+        document.getElementById("loginModal").style.display = "none";
+
+        // authorized.html'e yönlendir
+        window.location.href = "authorized.html";
+    });
 
 });
-
-
-
-
-
-
-
