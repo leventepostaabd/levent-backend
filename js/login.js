@@ -1,3 +1,7 @@
+if (!document.getElementById("loginModal")) {
+    return; // Bu sayfada login modalı yok → login.js çalışmasın
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const modal = document.getElementById("loginModal");
@@ -85,6 +89,7 @@ document.getElementById("loginType").addEventListener("change", function () {
   });
 
 });
+
 
 
 
