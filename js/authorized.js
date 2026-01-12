@@ -6,7 +6,7 @@ let loginType = null;
 let editRecordInfo = null;
 
 // ------------------------------------------------------------
-// STATUS FONKSİYONU (EKSİK OLAN)
+// STATUS FONKSİYONU
 // ------------------------------------------------------------
 function getStatus(nextTestDate) {
   if (!nextTestDate) {
@@ -156,7 +156,10 @@ function renderTable(records) {
     noRecordsEl.style.display = "block";
     return;
   }
+
+  // Liste varsa noRecords tamamen kaldır
   noRecordsEl.style.display = "none";
+  noRecordsEl.remove();
 
   records.forEach(rec => {
     const tr = document.createElement("tr");
@@ -215,6 +218,20 @@ function openRecordModal(mode, info = null) {
 
   editRecordInfo = null;
   document.getElementById("recordError").textContent = "";
+
+  // Class dropdown her açılışta doldurulsun
+  const classSelect = document.getElementById("recClass");
+  if (classSelect) {
+    classSelect.innerHTML = `
+      <option value="TL">Türk Loydu (TL)</option>
+      <option value="BV">Bureau Veritas (BV)</option>
+      <option value="DNV">DNV</option>
+      <option value="ABS">ABS</option>
+      <option value="LR">Lloyd’s Register (LR)</option>
+      <option value="RINA">RINA</option>
+      <option value="ClassNK">ClassNK</option>
+    `;
+  }
 
   if (mode === "new") {
     document.getElementById("recordModalTitle").textContent = "Yeni Test Kaydı";
