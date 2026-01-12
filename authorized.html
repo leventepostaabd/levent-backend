@@ -36,14 +36,19 @@
     <h2>Admin Panel</h2>
     <p>Test kayıtlarını ekleyebilir, düzenleyebilir ve silebilirsiniz.</p>
   </div>
-
-  <button id="btnNewRecord" class="btnPrimary">
-    + Yeni Test Kaydı
-  </button>
 </div>
 
 <div class="container section">
   <div class="recordsCard">
+
+    <!-- BUTON BURAYA TAŞINDI -->
+    <div class="top-bar">
+      <button id="btnNewRecord" class="btnPrimary">
+        + Yeni Test Kaydı
+      </button>
+    </div>
+    <!-- /BUTON -->
+
     <div class="recordsHeader">
       <div>
         <h1 id="recordsTitle">Test Records</h1>
@@ -56,6 +61,7 @@
     <div id="noRecords" class="noRecords" style="display:none;">
       No records found for this account.
     </div>
+
 
     <div class="tableWrapper">
       <table class="recordsTable">
