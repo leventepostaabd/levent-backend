@@ -49,92 +49,93 @@
     </div>
     <!-- /BUTON -->
 
-    <div class="recordsHeader">
-      <div>
-        <h1 id="recordsTitle">Test Records</h1>
-        <p id="recordsSubtitle">Authorized access to vessel test history.</p>
-        <p id="recordsUser"></p>
-      </div>
-      <a href="index.html" class="btnGhost">← Main Page</a>
-    </div>
-
-    <div id="noRecords" class="noRecords" style="display:none;">
-      No records found for this account.
-    </div>
-
-
-    <div class="tableWrapper">
-      <table class="recordsTable">
-        <thead>
-          <tr>
-            <th>Vessel</th>
-            <th>Location</th>
-            <th>Test date</th>
-            <th>Device</th>
-            <th>Serial no</th>
-            <th>Certificate</th>
-            <th>Next test</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="recordsBody">
-          <!-- JS dolduracak -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<div id="recordModal" class="loginModal">
+   <div id="recordModal" class="loginModal">
   <div class="loginBox">
     <h2 id="recordModalTitle">Yeni Test Kaydı</h2>
-<label>Class</label>
-<select id="recClass">
-  <option value="TL">Türk Loydu (TL)</option>
-  <option value="BV">Bureau Veritas (BV)</option>
-  <option value="DNV">DNV</option>
-  <option value="ABS">ABS</option>
-  <option value="LR">Lloyd’s Register (LR)</option>
-  <option value="RINA">RINA</option>
-  <option value="ClassNK">ClassNK</option>
-</select>
 
-    <label>Firma</label>
-    <select id="recCompany">
-      <option value="TP Offshore">TP Offshore</option>
-      <option value="MEDLOG">MEDLOG</option>
-      <option value="Reederei NORD">Reederei NORD</option>
-      <!-- ihtiyaca göre diğerleri -->
+    <!-- CLASS -->
+    <label>Class</label>
+    <select id="recClass">
+      <option value="TL">Türk Loydu (TL)</option>
+      <option value="BV">Bureau Veritas (BV)</option>
+      <option value="DNV">DNV</option>
+      <option value="ABS">ABS</option>
+      <option value="LR">Lloyd’s Register (LR)</option>
+      <option value="RINA">RINA</option>
+      <option value="ClassNK">ClassNK</option>
     </select>
 
+    <!-- FİRMA + YENİ FİRMA EKLE -->
+    <label>Firma</label>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <select id="recCompany">
+        <option value="TP Offshore">TP Offshore</option>
+        <option value="MEDLOG">MEDLOG</option>
+        <option value="Reederei NORD">Reederei NORD</option>
+      </select>
+      <button id="btnAddCompany" class="btnPrimary" style="padding:4px 10px;">+</button>
+    </div>
+
+    <!-- Yeni firma inputu (başta gizli) -->
+    <div id="newCompanyBox" style="display:none; margin-top:8px;">
+      <input type="text" id="newCompanyInput" placeholder="Yeni firma adı">
+      <button id="saveCompany" class="btnPrimary" style="padding:4px 10px;">Ekle</button>
+    </div>
+
+    <!-- GEMİ -->
     <label>Gemi adı</label>
     <input type="text" id="recShip">
 
-    <label>Lokasyon</label>
-    <input type="text" id="recLocation">
+    <!-- TEST TİPİ (ÇOKTAN SEÇMELİ) -->
+    <label>Test Tipi</label>
+    <select id="recDevice">
+      <option value="Vibration Test">Vibration Test</option>
+      <option value="ACB Test">ACB Test</option>
+      <option value="Busbar Test">Busbar Test</option>
+      <option value="Insulation & Continuity Test">Insulation & Continuity Test</option>
+      <option value="Earth Fault Loop Test">Earth Fault Loop Test</option>
+      <option value="Grounding Test">Grounding Test</option>
+      <option value="Thermal Imaging (IR)">Thermal Imaging (IR)</option>
+      <option value="Megger Test">Megger Test</option>
+      <option value="Harmonic Analysis">Harmonic Analysis</option>
+      <option value="Load Test">Load Test</option>
+      <option value="Fire Detection Loop Test">Fire Detection Loop Test</option>
+      <option value="Bridge Equipment Power Supply Test">Bridge Equipment Power Supply Test</option>
+      <option value="Service Report">Service Report</option>
+    </select>
 
-    <label>Test tarihi</label>
-    <input type="date" id="recDate">
-
-    <label>Cihaz / Test tipi</label>
-    <input type="text" id="recDevice">
-
+    <!-- SERİ NO -->
     <label>Seri numarası</label>
     <input type="text" id="recSerial">
 
+    <!-- LOKASYON -->
+    <label>Lokasyon</label>
+    <input type="text" id="recLocation">
+
+    <!-- TEST TARİHİ -->
+    <label>Test tarihi</label>
+    <input type="date" id="recDate">
+
+    <!-- PDF ADI -->
     <label>Sertifika dosya adı (PDF)</label>
     <input type="text" id="recCert" placeholder="cert-xxxx.pdf">
-<label for="pdfUpload">PDF Sertifika Yükle:</label>
-<input type="file" id="pdfUpload" accept=".pdf">
 
+    <!-- PDF UPLOAD -->
+    <label for="pdfUpload">PDF Sertifika Yükle:</label>
+    <input type="file" id="pdfUpload" accept=".pdf">
+
+    <!-- NEXT TEST -->
     <label>Sonraki test tarihi</label>
     <input type="date" id="recNextTest">
 
+    <!-- BUTTONS -->
     <button id="btnSaveRecord" class="btnPrimary">Kaydet</button>
     <button id="btnCancelRecord" class="btnGhost">İptal</button>
 
     <p id="recordError" class="loginError"></p>
   </div>
 </div>
+
 
 <footer class="footer">
   © 2026 Levent Marine Electro Technical Services.
