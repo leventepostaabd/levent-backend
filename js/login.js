@@ -47,6 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const pass = loginPassEl.value.trim();
         let selectedUser = null;
 
+        loginErrorEl.textContent = ""; // eski hatayı temizle
+
         // CLASS LOGIN
         if (type === "CLASS") {
             selectedUser = loginClassEl.value;
@@ -74,8 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Başarılı giriş
+        // Başarılı giriş → bilgileri kaydet
         localStorage.setItem("authorizedUser", selectedUser);
+        localStorage.setItem("loginType", type);
 
         // Modal kapat
         loginModal.style.display = "none";
@@ -85,5 +88,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
-
-
