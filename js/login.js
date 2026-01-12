@@ -1,5 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    const authorizedBtn = document.getElementById("authorizedBtn");
+    const loginModal = document.getElementById("loginModal");
+
+    // Modal aç
+    authorizedBtn.addEventListener("click", () => {
+        loginModal.style.display = "flex";
+    });
 
     const loginTypeEl = document.getElementById("loginType");
     const classSelectBox = document.getElementById("classSelectBox");
@@ -31,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Modal kapatma
     loginClose.addEventListener("click", () => {
-        document.getElementById("loginModal").style.display = "none";
+        loginModal.style.display = "none";
     });
 
     // Giriş butonu
@@ -42,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // CLASS LOGIN
         if (type === "CLASS") {
-            selectedUser = loginClassEl.value; // TL, BV, DNV...
+            selectedUser = loginClassEl.value;
             if (pass !== "class2025") {
                 loginErrorEl.textContent = "Hatalı parola.";
                 return;
@@ -51,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // COMPANY LOGIN
         else if (type === "COMPANY") {
-            selectedUser = loginCompanyEl.value; // TP Offshore, MEDLOG...
+            selectedUser = loginCompanyEl.value;
             if (pass !== "company2025") {
                 loginErrorEl.textContent = "Hatalı parola.";
                 return;
@@ -67,15 +74,19 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Başarılı giriş → kullanıcıyı kaydet
+        // Başarılı giriş
         localStorage.setItem("authorizedUser", selectedUser);
 
         // Modal kapat
-        document.getElementById("loginModal").style.display = "none";
+        loginModal.style.display = "none";
 
-        // authorized.html'e yönlendir
+        // Yönlendir
         window.location.href = "authorized.html";
     });
 
 });
+
+
+});
+
 
