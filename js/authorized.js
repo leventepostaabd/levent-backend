@@ -2,12 +2,16 @@
 
 let shipRecords = {};
 let currentUser = null;
+let loginType = null;
 let editRecordInfo = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+
   // 1) Giriş kontrolü
   currentUser = localStorage.getItem("authorizedUser");
-  if (!currentUser) {
+  loginType = localStorage.getItem("loginType");
+
+  if (!currentUser || !loginType) {
     window.location.href = "index.html";
     return;
   }
@@ -15,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 2) Kullanıcı adını başlığa yaz
   const userEl = document.getElementById("recordsUser");
   if (userEl) {
-    userEl.textContent = `Authorized account: ${currentUser}`;
+    userEl.textContent = `Authorized account: ${currentUser} (${loginType})`;
   }
 
   // 3) Kayıtları backend'den çek
@@ -30,13 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("noRecords").style.display = "block";
     });
 
-  // 4) Modal butonları (iptal)
+  // 4) Modal kapatma
   const btnCancel = document.getElementById("btnCancelRecord");
-  if (btnCancel) {
-    btnCancel.addEventListener("click", closeRecordModal);
-  }
+  if (btnCancel) btnCancel.addEventListener("click", closeRecordModal);
 
-  // 5) Kaydet butonu → önce PDF upload, sonra kayıt kaydet
+  // 5) Kaydet butonu
   const btnSave = document.getElementById("btnSaveRecord");
   if (btnSave) {
     btnSave.addEventListener("click", () => {
@@ -50,26 +52,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Kullanıcıya göre başlangıç
+
+// ------------------------------------------------------------
+// KULLANICI YETKİ BAŞLANGICI
+// ------------------------------------------------------------
 function initForUser() {
-  const allRecords = collectRecordsForUser(currentUser);
+
+  const allRecords = collectRecordsForUser();
   renderTable(allRecords);
 
-  const panel = document.getElementById("adminPanel");
+  const adminPanel = document.getElementById("adminPanel");
 
-  if (currentUser === "ADMIN") {
-    panel.style.display = "block";
+  // 🔥 SADECE ADMIN PANELİ GÖRSÜN
+  if (loginType === "ADMIN") {
+    adminPanel.style.display = "block";
     setupAdminPanel();
   } else {
-    panel.style.display = "none";
+    adminPanel.style.display = "none";
   }
 }
 
 
+// ------------------------------------------------------------
+// KAYIT FİLTRELEME
+// ------------------------------------------------------------
+function collectRecordsForUser() {
 
-// Sadece ilgili kullanıcının göreceği kayıtları topla
-function collectRecordsForUser(user) {
-  if (user === "ADMIN") {
+  // ADMIN → tüm kayıtlar
+  if (loginType === "ADMIN") {
     const all = [];
     Object.entries(shipRecords).forEach(([company, arr]) => {
       (arr || []).forEach(r => all.push({ ...r, company }));
@@ -77,33 +87,25 @@ function collectRecordsForUser(user) {
     return all;
   }
 
-  const list = shipRecords[user] || [];
-  return (list || []).map(r => ({ ...r, company: user }));
+  // CLASS → sadece kendi class kayıtları
+  if (loginType === "CLASS") {
+    const list = shipRecords[currentUser] || [];
+    return list.map(r => ({ ...r, company: currentUser }));
+  }
+
+  // COMPANY → sadece kendi şirket kayıtları
+  if (loginType === "COMPANY") {
+    const list = shipRecords[currentUser] || [];
+    return list.map(r => ({ ...r, company: currentUser }));
+  }
+
+  return [];
 }
 
-// Tarih durumunu hesapla
-function getStatus(nextTest) {
-  if (!nextTest) {
-    return { label: "N/A", cls: "badge-ok" };
-  }
 
-  const today = new Date();
-  const next = new Date(nextTest);
-  const diffDays = Math.round((next - today) / (1000 * 60 * 60 * 24));
-
-  if (isNaN(diffDays)) {
-    return { label: "N/A", cls: "badge-ok" };
-  }
-
-  if (diffDays < 0) {
-    return { label: "Overdue", cls: "badge-overdue" };
-  } else if (diffDays <= 60) {
-    return { label: "Due soon", cls: "badge-soon" };
-  }
-  return { label: "OK", cls: "badge-ok" };
-}
-
-// Tabloyu doldur
+// ------------------------------------------------------------
+// TABLO
+// ------------------------------------------------------------
 function renderTable(records) {
   const tbody = document.getElementById("recordsBody");
   const noRecordsEl = document.getElementById("noRecords");
@@ -127,17 +129,15 @@ function renderTable(records) {
       <td>${rec.device || ""}</td>
       <td>${rec.serial || ""}</td>
       <td>${
-  rec.certificate
-    ? `<a href="https://levent-backend-zxel.onrender.com/upload/${rec.certificate}" target="_blank">${rec.certificate}</a>`
-    : ""
-}</td>
-
-
-
+        rec.certificate
+          ? `<a href="https://levent-backend-zxel.onrender.com/upload/${rec.certificate}" target="_blank">${rec.certificate}</a>`
+          : ""
+      }</td>
       <td>${rec.nextTest || ""}</td>
       <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
+
       ${
-        currentUser === "ADMIN"
+        loginType === "ADMIN"
           ? `<td>
               <button class="btnGhost btnTiny" data-edit="${rec.id}" data-company="${rec.company}">Düzenle</button>
               <button class="btnGhost btnTiny" data-del="${rec.id}" data-company="${rec.company}">Sil</button>
@@ -149,43 +149,31 @@ function renderTable(records) {
     tbody.appendChild(tr);
   });
 
-  if (currentUser === "ADMIN") {
+  if (loginType === "ADMIN") {
     attachAdminRowEvents();
   }
 }
 
-// Admin panelini aç
-function setupAdminPanel() {
-  const panel = document.getElementById("adminPanel");
-  if (panel) panel.style.display = "block";
 
+// ------------------------------------------------------------
+// ADMIN PANELİ
+// ------------------------------------------------------------
+function setupAdminPanel() {
   const btnNew = document.getElementById("btnNewRecord");
   if (btnNew) {
     btnNew.addEventListener("click", () => openRecordModal("new"));
   }
 }
 
-// Satır butonlarına event bağla (Düzenle / Sil)
-function attachAdminRowEvents() {
-  document.querySelectorAll("[data-edit]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-edit");
-      const company = btn.getAttribute("data-company");
-      openRecordModal("edit", { company, id });
-    });
-  });
 
-  document.querySelectorAll("[data-del]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.getAttribute("data-del");
-      const company = btn.getAttribute("data-company");
-      deleteRecord(company, id);
-    });
-  });
-}
-
-// Modal aç/kapat
+// ------------------------------------------------------------
+// MODAL
+// ------------------------------------------------------------
 function openRecordModal(mode, info = null) {
+
+  // 🔥 ADMIN DEĞİLSE MODAL AÇILMASIN
+  if (loginType !== "ADMIN") return;
+
   editRecordInfo = null;
   document.getElementById("recordError").textContent = "";
 
@@ -205,7 +193,10 @@ function closeRecordModal() {
   document.getElementById("recordModal").style.display = "none";
 }
 
-// Form temizle
+
+// ------------------------------------------------------------
+// FORM
+// ------------------------------------------------------------
 function clearRecordForm() {
   document.getElementById("recCompany").value = "TP Offshore";
   document.getElementById("recShip").value = "";
@@ -219,7 +210,6 @@ function clearRecordForm() {
   if (fileInput) fileInput.value = "";
 }
 
-// Formu doldur (düzenleme için)
 function fillRecordForm(company, id) {
   const list = shipRecords[company] || [];
   const rec = list.find(r => r.id === id);
@@ -235,8 +225,14 @@ function fillRecordForm(company, id) {
   document.getElementById("recNextTest").value = rec.nextTest || "";
 }
 
-// Kayıt kaydet (yeni veya düzenleme) → BACKEND'E POST
+
+// ------------------------------------------------------------
+// KAYIT KAYDETME
+// ------------------------------------------------------------
 function saveRecordFromModal() {
+
+  if (loginType !== "ADMIN") return;
+
   const company = document.getElementById("recCompany").value;
   const ship = document.getElementById("recShip").value.trim();
   const location = document.getElementById("recLocation").value.trim();
@@ -263,15 +259,10 @@ function saveRecordFromModal() {
     nextTest
   };
 
-  const url = "https://levent-backend-zxel.onrender.com/api/saveRecord";
-
-  fetch(url, {
+  fetch("https://levent-backend-zxel.onrender.com/api/saveRecord", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      company,
-      record: newRecord
-    })
+    body: JSON.stringify({ company, record: newRecord })
   })
     .then(res => res.json())
     .then(() => {
@@ -286,7 +277,7 @@ function saveRecordFromModal() {
       }
 
       shipRecords[company] = list;
-      renderTable(collectRecordsForUser(currentUser));
+      renderTable(collectRecordsForUser());
       closeRecordModal();
     })
     .catch(err => {
@@ -296,8 +287,14 @@ function saveRecordFromModal() {
     });
 }
 
-// Kayıt sil → BACKEND'E POST
+
+// ------------------------------------------------------------
+// KAYIT SİLME
+// ------------------------------------------------------------
 function deleteRecord(company, id) {
+
+  if (loginType !== "ADMIN") return;
+
   if (!confirm("Bu kaydı silmek istediğinize emin misiniz?")) return;
 
   fetch("https://levent-backend-zxel.onrender.com/api/deleteRecord", {
@@ -308,7 +305,7 @@ function deleteRecord(company, id) {
     .then(res => res.json())
     .then(() => {
       shipRecords[company] = (shipRecords[company] || []).filter(r => r.id !== id);
-      renderTable(collectRecordsForUser(currentUser));
+      renderTable(collectRecordsForUser());
     })
     .catch(err => {
       console.error("Kayıt silinemedi", err);
@@ -316,7 +313,10 @@ function deleteRecord(company, id) {
     });
 }
 
-// PDF upload → BACKEND'E GÖNDER
+
+// ------------------------------------------------------------
+// PDF UPLOAD
+// ------------------------------------------------------------
 function uploadPDF(callback) {
   const fileInput = document.getElementById("pdfUpload");
   if (!fileInput || !fileInput.files.length) {
@@ -332,15 +332,9 @@ function uploadPDF(callback) {
     body: formData
   })
     .then(res => res.json())
-    .then(data => {
-      callback(data.filename);
-    })
+    .then(data => callback(data.filename))
     .catch(err => {
       console.error("PDF yüklenemedi", err);
       callback(null);
     });
 }
-
-
-
-
