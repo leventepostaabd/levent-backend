@@ -335,3 +335,23 @@ function uploadPDF(callback) {
     });
 }
 
+// Yeni Firma Ekleme Sistemi
+document.getElementById("btnAddCompany").addEventListener("click", () => {
+  document.getElementById("newCompanyBox").style.display = "block";
+});
+
+document.getElementById("saveCompany").addEventListener("click", () => {
+  const newFirm = document.getElementById("newCompanyInput").value.trim();
+  if (newFirm === "") return;
+
+  const select = document.getElementById("recCompany");
+  const option = document.createElement("option");
+  option.value = newFirm;
+  option.textContent = newFirm;
+  select.appendChild(option);
+
+  select.value = newFirm;
+  document.getElementById("newCompanyInput").value = "";
+  document.getElementById("newCompanyBox").style.display = "none";
+});
+
