@@ -55,10 +55,16 @@ function initForUser() {
   const allRecords = collectRecordsForUser(currentUser);
   renderTable(allRecords);
 
+  const panel = document.getElementById("adminPanel");
+
   if (currentUser === "ADMIN") {
+    if (panel) panel.style.display = "block";
     setupAdminPanel();
+  } else {
+    if (panel) panel.style.display = "none";
   }
 }
+
 
 // Sadece ilgili kullanıcının göreceği kayıtları topla
 function collectRecordsForUser(user) {
@@ -333,5 +339,6 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
+
 
 
