@@ -120,10 +120,11 @@ function renderTable(records) {
       <td>${rec.device || ""}</td>
       <td>${rec.serial || ""}</td>
       <td>${
-        rec.certificate
-          ? `<a href="uploads/${rec.certificate}" target="_blank">${rec.certificate}</a>`
-          : ""
-      }</td>
+  rec.certificate
+    ? `<a href="https://levent-backend-zxel.onrender.com/upload/${rec.certificate}" target="_blank">${rec.certificate}</a>`
+    : ""
+}</td>
+
       <td>${rec.nextTest || ""}</td>
       <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
       ${
@@ -330,3 +331,4 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
+
