@@ -125,3 +125,24 @@
   font-size: 13px;
   opacity: 0.8;
 }
+
+.top-bar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.btnPrimary {
+  padding: 10px 18px;
+  background: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btnPrimary:hover {
+  background: #005fcc;
+}
