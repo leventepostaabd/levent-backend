@@ -5,16 +5,32 @@ let currentUser = null;
 let loginType = null;
 let editRecordInfo = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-// CLASS veya COMPANY ise admin butonlarını anında kaldır
-const loginTypeLS = localStorage.getItem("loginType");
-if (loginTypeLS !== "ADMIN") {
-    const btnNew = document.getElementById("btnNewRecord");
-    if (btnNew) btnNew.remove();
+// ------------------------------------------------------------
+// STATUS FONKSİYONU (EKSİK OLAN)
+// ------------------------------------------------------------
+function getStatus(nextTestDate) {
+  if (!nextTestDate) {
+    return { cls: "statusUnknown", label: "Unknown" };
+  }
 
-    const modal = document.getElementById("recordModal");
-    if (modal) modal.remove();
+  const today = new Date();
+  const testDate = new Date(nextTestDate);
+
+  if (testDate < today) {
+    return { cls: "statusExpired", label: "Expired" };
+  }
+
+  const diff = testDate - today;
+  const days = diff / (1000 * 60 * 60 * 24);
+
+  if (days < 30) {
+    return { cls: "statusSoon", label: "Due Soon" };
+  }
+
+  return { cls: "statusOK", label: "OK" };
 }
+
+document.addEventListener("DOMContentLoaded", () => {
 
   // 1) Giriş kontrolü
   currentUser = localStorage.getItem("authorizedUser");
@@ -23,6 +39,15 @@ if (loginTypeLS !== "ADMIN") {
   if (!currentUser || !loginType) {
     window.location.href = "index.html";
     return;
+  }
+
+  // CLASS / COMPANY → admin butonlarını DOM’dan tamamen kaldır
+  if (loginType !== "ADMIN") {
+    const btnNew = document.getElementById("btnNewRecord");
+    if (btnNew) btnNew.remove();
+
+    const modal = document.getElementById("recordModal");
+    if (modal) modal.remove();
   }
 
   // 2) Kullanıcı adını başlığa yaz
@@ -78,7 +103,7 @@ function initForUser() {
   } else {
     adminPanel.style.display = "none";
 
-    // 🔥 Ek güvenlik: admin butonlarını DOM’dan tamamen kaldır
+    // Ek güvenlik: admin butonlarını DOM’dan tamamen kaldır
     const btnNew = document.getElementById("btnNewRecord");
     if (btnNew) btnNew.remove();
 
@@ -86,7 +111,6 @@ function initForUser() {
     if (modal) modal.remove();
   }
 }
-
 
 
 // ------------------------------------------------------------
@@ -187,7 +211,6 @@ function setupAdminPanel() {
 // ------------------------------------------------------------
 function openRecordModal(mode, info = null) {
 
-  // 🔥 ADMIN DEĞİLSE MODAL AÇILMASIN
   if (loginType !== "ADMIN") return;
 
   editRecordInfo = null;
@@ -354,5 +377,3 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
-
-
