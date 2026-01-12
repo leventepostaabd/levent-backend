@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnClose = document.getElementById("loginClose");
   const btnSubmit = document.getElementById("loginSubmit");
   const API = "https://levent-backend-zxel.onrender.com";  // Backend URL
-// Sayfa açıldığında loginType değişimini tetikle
-document.getElementById("loginType").dispatchEvent(new Event("change"));
+
 
   // Login type değişince ilgili alanları göster/gizle
 document.getElementById("loginType").addEventListener("change", function () {
@@ -86,6 +85,7 @@ document.getElementById("loginType").addEventListener("change", function () {
   });
 
 });
+
 
 
 
