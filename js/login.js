@@ -1,9 +1,9 @@
+
+
+document.addEventListener("DOMContentLoaded", () => {
 if (!document.getElementById("loginModal")) {
     return; // Bu sayfada login modalı yok → login.js çalışmasın
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-
   const modal = document.getElementById("loginModal");
   const btnOpen = document.getElementById("authorizedBtn");
   const btnClose = document.getElementById("loginClose");
@@ -89,6 +89,7 @@ document.getElementById("loginType").addEventListener("change", function () {
   });
 
 });
+
 
 
 
