@@ -13,12 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 2) Kullanıcı adını başlığa yaz
-  document.getElementById("recordsUser").textContent =
-    `Authorized account: ${currentUser}`;
+  const userEl = document.getElementById("recordsUser");
+  if (userEl) {
+    userEl.textContent = `Authorized account: ${currentUser}`;
+  }
 
   // 3) Kayıtları backend'den çek
   fetch("https://levent-backend-zxel.onrender.com/api/getRecords")
-
     .then(res => res.json())
     .then(data => {
       shipRecords = data || {};
@@ -81,28 +82,19 @@ function getStatus(nextTest) {
 
   const today = new Date();
   const next = new Date(nextTest);
+  const diffDays = Math.round((next - today) / (1000 * 60 * 60 * 24));
 
-  const diffDays = Math.floor((next - today) / (1000 * 60 * 60 * 24));
-  const overdueDays = Math.floor((today - next) / (1000 * 60 * 60 * 24));
+  if (isNaN(diffDays)) {
+    return { label: "N/A", cls: "badge-ok" };
+  }
 
-  // 1) Overdue → 30 günden fazla geçmişse
-  if (overdueDays > 30) {
+  if (diffDays < 0) {
     return { label: "Overdue", cls: "badge-overdue" };
+  } else if (diffDays <= 60) {
+    return { label: "Due soon", cls: "badge-soon" };
   }
-
-  // 2) Planning Required → 60 gün kala
-  if (diffDays <= 60 && diffDays >= 0) {
-    return { label: "Planning Required", cls: "badge-soon" };
-  }
-
-  // 3) Active → tarih gelecekte ve 60 günden fazla varsa
-  if (diffDays > 60) {
-    return { label: "Active", cls: "badge-ok" };
-  }
-
-  return { label: "Active", cls: "badge-ok" };
+  return { label: "OK", cls: "badge-ok" };
 }
-
 
 // Tabloyu doldur
 function renderTable(records) {
@@ -129,10 +121,9 @@ function renderTable(records) {
       <td>${rec.serial || ""}</td>
       <td>${
         rec.certificate
-          ? `<a href="upload/${rec.certificate}" target="_blank">${rec.certificate}</a>`
+          ? `<a href="uploads/${rec.certificate}" target="_blank">${rec.certificate}</a>`
           : ""
       }</td>
-
       <td>${rec.nextTest || ""}</td>
       <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
       ${
@@ -262,9 +253,7 @@ function saveRecordFromModal() {
     nextTest
   };
 
-  // Yeni mi, düzenleme mi?
- const url = "https://levent-backend-zxel.onrender.com/api/saveRecord";
-
+  const url = "https://levent-backend-zxel.onrender.com/api/saveRecord";
 
   fetch(url, {
     method: "POST",
@@ -276,7 +265,6 @@ function saveRecordFromModal() {
   })
     .then(res => res.json())
     .then(() => {
-      // Lokal kopyayı güncelle
       if (!shipRecords[company]) shipRecords[company] = [];
       const list = shipRecords[company];
 
@@ -303,7 +291,6 @@ function deleteRecord(company, id) {
   if (!confirm("Bu kaydı silmek istediğinize emin misiniz?")) return;
 
   fetch("https://levent-backend-zxel.onrender.com/api/deleteRecord", {
-
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ company, id })
@@ -331,7 +318,6 @@ function uploadPDF(callback) {
   formData.append("pdf", fileInput.files[0]);
 
   fetch("https://levent-backend-zxel.onrender.com/api/uploadCert", {
-
     method: "POST",
     body: formData
   })
@@ -344,26 +330,3 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
-
-// Yeni Firma Ekleme Sistemi
-document.getElementById("btnAddCompany").addEventListener("click", () => {
-  document.getElementById("newCompanyBox").style.display = "block";
-});
-
-document.getElementById("saveCompany").addEventListener("click", () => {
-  const newFirm = document.getElementById("newCompanyInput").value.trim();
-  if (newFirm === "") return;
-
-  const select = document.getElementById("recCompany");
-  const option = document.createElement("option");
-  option.value = newFirm;
-  option.textContent = newFirm;
-  select.appendChild(option);
-
-  select.value = newFirm;
-  document.getElementById("newCompanyInput").value = "";
-  document.getElementById("newCompanyBox").style.display = "none";
-});
-
-
-
