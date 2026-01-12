@@ -125,6 +125,8 @@ function renderTable(records) {
     : ""
 }</td>
 
+
+
       <td>${rec.nextTest || ""}</td>
       <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
       ${
@@ -331,4 +333,5 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
+
 
