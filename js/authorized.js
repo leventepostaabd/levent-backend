@@ -81,19 +81,28 @@ function getStatus(nextTest) {
 
   const today = new Date();
   const next = new Date(nextTest);
-  const diffDays = Math.round((next - today) / (1000 * 60 * 60 * 24));
 
-  if (isNaN(diffDays)) {
-    return { label: "N/A", cls: "badge-ok" };
-  }
+  const diffDays = Math.floor((next - today) / (1000 * 60 * 60 * 24));
+  const overdueDays = Math.floor((today - next) / (1000 * 60 * 60 * 24));
 
-  if (diffDays < 0) {
+  // 1) Overdue → 30 günden fazla geçmişse
+  if (overdueDays > 30) {
     return { label: "Overdue", cls: "badge-overdue" };
-  } else if (diffDays <= 60) {
-    return { label: "Due soon", cls: "badge-soon" };
   }
-  return { label: "OK", cls: "badge-ok" };
+
+  // 2) Planning Required → 60 gün kala
+  if (diffDays <= 60 && diffDays >= 0) {
+    return { label: "Planning Required", cls: "badge-soon" };
+  }
+
+  // 3) Active → tarih gelecekte ve 60 günden fazla varsa
+  if (diffDays > 60) {
+    return { label: "Active", cls: "badge-ok" };
+  }
+
+  return { label: "Active", cls: "badge-ok" };
 }
+
 
 // Tabloyu doldur
 function renderTable(records) {
@@ -354,4 +363,5 @@ document.getElementById("saveCompany").addEventListener("click", () => {
   document.getElementById("newCompanyInput").value = "";
   document.getElementById("newCompanyBox").style.display = "none";
 });
+
 
