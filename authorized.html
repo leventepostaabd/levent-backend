@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<!-- HEADER (temiz menü + About) -->
+<!-- HEADER -->
 <div class="header">
   <div class="container headerInner">
     <a class="brand" href="index.html">
@@ -31,135 +31,137 @@
     </div>
   </div>
 </div>
-<div id="adminPanel" class="adminPanel" style="display:none;">
-  <div class="adminHeader">
-    <h2>Admin Panel</h2>
-    <p>Test kayıtlarını ekleyebilir, düzenleyebilir ve silebilirsiniz.</p>
-  </div>
-</div>
 
 <div class="container section">
   <div class="recordsCard">
 
-    <!-- BUTON BURAYA TAŞINDI -->
-    <div class="top-bar">
-      <button id="btnNewRecord" class="btnPrimary">
-        + Yeni Test Kaydı
-      </button>
+    <!-- ADMIN PANEL (doğru yer burası) -->
+    <div id="adminPanel" class="adminPanel" style="display:none;">
+      <div class="adminHeader">
+        <h2>Admin Panel</h2>
+        <p>Test kayıtlarını ekleyebilir, düzenleyebilir ve silebilirsiniz.</p>
+      </div>
+
+      <div class="top-bar">
+        <button id="btnNewRecord" class="btnPrimary">
+          + Yeni Test Kaydı
+        </button>
+      </div>
     </div>
-<div id="noRecords" class="noRecords" style="display:none;">
-  No records found for this account.
-</div>
+    <!-- /ADMIN PANEL -->
 
-<div class="tableWrapper">
-  <table class="recordsTable">
-    <thead>
-      <tr>
-        <th>Vessel</th>
-        <th>Location</th>
-        <th>Test date</th>
-        <th>Device</th>
-        <th>Serial no</th>
-        <th>Certificate</th>
-        <th>Next test</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody id="recordsBody">
-      <!-- JS dolduracak -->
-    </tbody>
-  </table>
-</div>
-
-    
-    <!-- /BUTON -->
-
-   <div id="recordModal" class="loginModal">
-  <div class="loginBox">
-    <h2 id="recordModalTitle">Yeni Test Kaydı</h2>
-
-    <!-- CLASS -->
-    <label>Class</label>
-    <select id="recClass">
-      <option value="TL">Türk Loydu (TL)</option>
-      <option value="BV">Bureau Veritas (BV)</option>
-      <option value="DNV">DNV</option>
-      <option value="ABS">ABS</option>
-      <option value="LR">Lloyd’s Register (LR)</option>
-      <option value="RINA">RINA</option>
-      <option value="ClassNK">ClassNK</option>
-    </select>
-
-    <!-- FİRMA + YENİ FİRMA EKLE -->
-    <label>Firma</label>
-    <div style="display:flex; gap:8px; align-items:center;">
-      <select id="recCompany">
-        <option value="TP Offshore">TP Offshore</option>
-        <option value="MEDLOG">MEDLOG</option>
-        <option value="Reederei NORD">Reederei NORD</option>
-      </select>
-      <button id="btnAddCompany" class="btnPrimary" style="padding:4px 10px;">+</button>
+    <div id="noRecords" class="noRecords" style="display:none;">
+      No records found for this account.
     </div>
 
-    <!-- Yeni firma inputu (başta gizli) -->
-    <div id="newCompanyBox" style="display:none; margin-top:8px;">
-      <input type="text" id="newCompanyInput" placeholder="Yeni firma adı">
-      <button id="saveCompany" class="btnPrimary" style="padding:4px 10px;">Ekle</button>
+    <div class="tableWrapper">
+      <table class="recordsTable">
+        <thead>
+          <tr>
+            <th>Vessel</th>
+            <th>Location</th>
+            <th>Test date</th>
+            <th>Device</th>
+            <th>Serial no</th>
+            <th>Certificate</th>
+            <th>Next test</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="recordsBody">
+          <!-- JS dolduracak -->
+        </tbody>
+      </table>
     </div>
 
-    <!-- GEMİ -->
-    <label>Gemi adı</label>
-    <input type="text" id="recShip">
+    <!-- MODAL -->
+    <div id="recordModal" class="loginModal">
+      <div class="loginBox">
+        <h2 id="recordModalTitle">Yeni Test Kaydı</h2>
 
-    <!-- TEST TİPİ (ÇOKTAN SEÇMELİ) -->
-    <label>Test Tipi</label>
-    <select id="recDevice">
-      <option value="Vibration Test">Vibration Test</option>
-      <option value="ACB Test">ACB Test</option>
-      <option value="Busbar Test">Busbar Test</option>
-      <option value="Insulation & Continuity Test">Insulation & Continuity Test</option>
-      <option value="Earth Fault Loop Test">Earth Fault Loop Test</option>
-      <option value="Grounding Test">Grounding Test</option>
-      <option value="Thermal Imaging (IR)">Thermal Imaging (IR)</option>
-      <option value="Megger Test">Megger Test</option>
-      <option value="Harmonic Analysis">Harmonic Analysis</option>
-      <option value="Load Test">Load Test</option>
-      <option value="Fire Detection Loop Test">Fire Detection Loop Test</option>
-      <option value="Bridge Equipment Power Supply Test">Bridge Equipment Power Supply Test</option>
-      <option value="Service Report">Service Report</option>
-    </select>
+        <label>Class</label>
+        <select id="recClass">
+          <option value="TL">Türk Loydu (TL)</option>
+          <option value="BV">Bureau Veritas (BV)</option>
+          <option value="DNV">DNV</option>
+          <option value="ABS">ABS</option>
+          <option value="LR">Lloyd’s Register (LR)</option>
+          <option value="RINA">RINA</option>
+          <option value="ClassNK">ClassNK</option>
+        </select>
 
-    <!-- SERİ NO -->
-    <label>Seri numarası</label>
-    <input type="text" id="recSerial">
+        <label>Firma</label>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <select id="recCompany">
+            <option value="TP Offshore">TP Offshore</option>
+            <option value="MEDLOG">MEDLOG</option>
+            <option value="Reederei NORD">Reederei NORD</option>
+          </select>
+          <button id="btnAddCompany" class="btnPrimary" style="padding:4px 10px;">+</button>
+        </div>
 
-    <!-- LOKASYON -->
-    <label>Lokasyon</label>
-    <input type="text" id="recLocation">
+        <div id="newCompanyBox" style="display:none; margin-top:8px;">
+          <input type="text" id="newCompanyInput" placeholder="Yeni firma adı">
+          <button id="saveCompany" class="btnPrimary" style="padding:4px 10px;">Ekle</button>
+        </div>
 
-    <!-- TEST TARİHİ -->
-    <label>Test tarihi</label>
-    <input type="date" id="recDate">
+        <label>Gemi adı</label>
+        <input type="text" id="recShip">
 
-    <!-- PDF ADI -->
-    <label>Sertifika dosya adı (PDF)</label>
-    <input type="text" id="recCert" placeholder="cert-xxxx.pdf">
+        <label>Test Tipi</label>
+        <select id="recDevice">
+          <option value="Vibration Test">Vibration Test</option>
+          <option value="ACB Test">ACB Test</option>
+          <option value="Busbar Test">Busbar Test</option>
+          <option value="Insulation & Continuity Test">Insulation & Continuity Test</option>
+          <option value="Earth Fault Loop Test">Earth Fault Loop Test</option>
+          <option value="Grounding Test">Grounding Test</option>
+          <option value="Thermal Imaging (IR)">Thermal Imaging (IR)</option>
+          <option value="Megger Test">Megger Test</option>
+          <option value="Harmonic Analysis">Harmonic Analysis</option>
+          <option value="Load Test">Load Test</option>
+          <option value="Fire Detection Loop Test">Fire Detection Loop Test</option>
+          <option value="Bridge Equipment Power Supply Test">Bridge Equipment Power Supply Test</option>
+          <option value="Service Report">Service Report</option>
+        </select>
 
-    <!-- PDF UPLOAD -->
-    <label for="pdfUpload">PDF Sertifika Yükle:</label>
-    <input type="file" id="pdfUpload" accept=".pdf">
+        <label>Seri numarası</label>
+        <input type="text" id="recSerial">
 
-    <!-- NEXT TEST -->
-    <label>Sonraki test tarihi</label>
-    <input type="date" id="recNextTest">
+        <label>Lokasyon</label>
+        <input type="text" id="recLocation">
 
-    <!-- BUTTONS -->
-    <button id="btnSaveRecord" class="btnPrimary">Kaydet</button>
-    <button id="btnCancelRecord" class="btnGhost">İptal</button>
+        <label>Test tarihi</label>
+        <input type="date" id="recDate">
 
-    <p id="recordError" class="loginError"></p>
+        <label>Sertifika dosya adı (PDF)</label>
+        <input type="text" id="recCert" placeholder="cert-xxxx.pdf">
+
+        <label for="pdfUpload">PDF Sertifika Yükle:</label>
+        <input type="file" id="pdfUpload" accept=".pdf">
+
+        <label>Sonraki test tarihi</label>
+        <input type="date" id="recNextTest">
+
+        <button id="btnSaveRecord" class="btnPrimary">Kaydet</button>
+        <button id="btnCancelRecord" class="btnGhost">İptal</button>
+
+        <p id="recordError" class="loginError"></p>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<footer class="footer">
+  © 2026 Levent Marine Electro Technical Services.
+</footer>
+
+<script src="js/global.js"></script>
+<script src="js/authorized.js"></script>
+</body>
+</html>
+
 
 
 <footer class="footer">
