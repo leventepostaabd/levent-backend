@@ -4,8 +4,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnOpen = document.getElementById("authorizedBtn");
   const btnClose = document.getElementById("loginClose");
   const btnSubmit = document.getElementById("loginSubmit");
-
   const API = "https://levent-backend-zxel.onrender.com";  // Backend URL
+
+  // Login type değişince ilgili alanları göster/gizle
+document.getElementById("loginType").addEventListener("change", function () {
+  const type = this.value;
+
+  const classBox = document.getElementById("classSelectBox");
+  const companyBox = document.getElementById("companyInfo");
+
+  if (type === "CLASS") {
+    classBox.style.display = "block";
+    companyBox.style.display = "none";
+  } 
+  else if (type === "COMPANY") {
+    classBox.style.display = "none";
+    companyBox.style.display = "block";
+  } 
+  else {
+    classBox.style.display = "none";
+    companyBox.style.display = "none";
+  }
+});
 
   // Modal aç
   btnOpen.addEventListener("click", () => {
@@ -64,4 +84,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
 
