@@ -1,26 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Parola eşleşmeleri
-  const passwords = {
-    "TL": "tl123",
-    "BV": "bv222",
-    "DNV": "dnv333",
-    "ABS": "abs444",
-    "LR": "lr555",
-    "RINA": "rina666",
-    "ClassNK": "nk111",
-
-    // Company Representative
-    "COMPANY": "company2025",
-
-    // Admin
-    "ADMIN": "admin2025"
-  };
-
   const modal = document.getElementById("loginModal");
-  const btnOpen = document.getElementById("authorizedBtn");   // ✔ DOĞRU ID
+  const btnOpen = document.getElementById("authorizedBtn");
   const btnClose = document.getElementById("loginClose");
   const btnSubmit = document.getElementById("loginSubmit");
+
+  const API = "https://levent-backend-zxel.onrender.com";  // Backend URL
 
   // Modal aç
   btnOpen.addEventListener("click", () => {
@@ -35,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Giriş yap
   btnSubmit.addEventListener("click", () => {
 
-    // Eski hata mesajını temizle
     document.getElementById("loginError").textContent = "";
 
     const loginType = document.getElementById("loginType").value;
@@ -47,32 +31,37 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedUser = document.getElementById("loginClass").value;
     } 
     else if (loginType === "COMPANY") {
-      selectedUser = "COMPANY";
+      selectedUser = document.getElementById("loginCompany").value;
     } 
     else if (loginType === "ADMIN") {
       selectedUser = "ADMIN";
     }
 
-    // Parola kontrolü
-    if (passwords[selectedUser] === loginPass) {
-
-      // Yetkili kullanıcıyı kaydet
-      localStorage.setItem("authorizedUser", selectedUser);
-
-      // authorized.html'e yönlendir
-      window.location.href = "authorized.html";
-
-    } else {
+    // Backend'e istek gönder
+    fetch(`${API}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: selectedUser,
+        password: loginPass
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        localStorage.setItem("authorizedUser", selectedUser);
+        window.location.href = "authorized.html";
+      } else {
+        document.getElementById("loginError").textContent =
+          "Hatalı giriş bilgileri";
+      }
+    })
+    .catch(() => {
       document.getElementById("loginError").textContent =
-        "Hatalı parola. Lütfen tekrar deneyin.";
-    }
+        "Sunucuya bağlanılamadı.";
+    });
+
   });
 
 });
-
-
-
-});
-
-
 
