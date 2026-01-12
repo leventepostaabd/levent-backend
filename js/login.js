@@ -1,9 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Bu sayfada login modalı yoksa login.js çalışmasın
-    if (!document.getElementById("loginModal")) {
-        return;
-    }
 
     const loginTypeEl = document.getElementById("loginType");
     const classSelectBox = document.getElementById("classSelectBox");
@@ -82,3 +78,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
