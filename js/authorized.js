@@ -63,14 +63,21 @@ function initForUser() {
 
   const adminPanel = document.getElementById("adminPanel");
 
-  // 🔥 SADECE ADMIN PANELİ GÖRSÜN
   if (loginType === "ADMIN") {
     adminPanel.style.display = "block";
     setupAdminPanel();
   } else {
     adminPanel.style.display = "none";
+
+    // 🔥 Ek güvenlik: admin butonlarını DOM’dan tamamen kaldır
+    const btnNew = document.getElementById("btnNewRecord");
+    if (btnNew) btnNew.remove();
+
+    const modal = document.getElementById("recordModal");
+    if (modal) modal.remove();
   }
 }
+
 
 
 // ------------------------------------------------------------
@@ -338,3 +345,4 @@ function uploadPDF(callback) {
       callback(null);
     });
 }
+
