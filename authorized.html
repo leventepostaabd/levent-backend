@@ -7,6 +7,7 @@
   <link rel="icon" href="assets/logo.png" />
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/authorized.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -22,10 +23,10 @@
     </a>
 
     <div class="nav">
-      <a href="index.html#services" data-i18n="nav_services">Services</a>
-      <a href="index.html#certification" data-i18n="nav_certification">Testing & Certification</a>
-      <a href="profile.html" data-i18n="nav_about">About</a>
-      <a href="index.html#contact" data-i18n="nav_contact">Contact</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#certification">Testing & Certification</a>
+      <a href="profile.html">About</a>
+      <a href="index.html#contact">Contact</a>
       <button class="lang" id="btnLangEn">🇺🇸 EN</button>
       <button class="lang" id="btnLangTr">🇹🇷 TR</button>
     </div>
@@ -35,11 +36,17 @@
 <div class="container section">
   <div class="recordsCard">
 
-    <!-- ADMIN PANEL (doğru yer burası) -->
+    <!-- ADMIN PANEL -->
     <div id="adminPanel" class="adminPanel" style="display:none;">
       <div class="adminHeader">
         <h2>Admin Panel</h2>
         <p>Test kayıtlarını ekleyebilir, düzenleyebilir ve silebilirsiniz.</p>
+      </div>
+
+      <!-- Dashboard / Records Tabs -->
+      <div class="adminTabs">
+        <button id="tabRecords" class="tabButton active">Records</button>
+        <button id="tabDashboard" class="tabButton">Dashboard</button>
       </div>
 
       <div class="top-bar">
@@ -48,13 +55,60 @@
         </button>
       </div>
     </div>
-    <!-- /ADMIN PANEL -->
 
+    <!-- FILTER BAR -->
+    <div id="filterBar" class="filterBar">
+      <input id="searchBox" class="filterInput" placeholder="Search records...">
+
+      <select id="filterClass" class="filterSelect">
+        <option value="ALL">Class (All)</option>
+        <option value="TL">TL</option>
+        <option value="BV">BV</option>
+        <option value="DNV">DNV</option>
+        <option value="ABS">ABS</option>
+        <option value="LR">LR</option>
+        <option value="RINA">RINA</option>
+        <option value="ClassNK">ClassNK</option>
+      </select>
+
+      <select id="filterType" class="filterSelect">
+        <option value="ALL">Test Type (All)</option>
+        <option value="Vibration Test">Vibration Test</option>
+        <option value="ACB Test">ACB Test</option>
+        <option value="Busbar Test">Busbar Test</option>
+        <option value="Insulation & Continuity Test">Insulation & Continuity Test</option>
+        <option value="Earth Fault Loop Test">Earth Fault Loop Test</option>
+        <option value="Grounding Test">Grounding Test</option>
+        <option value="Thermal Imaging (IR)">Thermal Imaging (IR)</option>
+        <option value="Megger Test">Megger Test</option>
+        <option value="Harmonic Analysis">Harmonic Analysis</option>
+        <option value="Load Test">Load Test</option>
+        <option value="Fire Detection Loop Test">Fire Detection Loop Test</option>
+        <option value="Bridge Equipment Power Supply Test">Bridge Equipment Power Supply Test</option>
+        <option value="Service Report">Service Report</option>
+      </select>
+
+      <select id="filterYear" class="filterSelect">
+        <option value="ALL">Year (All)</option>
+      </select>
+
+      <select id="filterStatus" class="filterSelect">
+        <option value="ALL">Status (All)</option>
+        <option value="OK">OK</option>
+        <option value="SOON">Due Soon</option>
+        <option value="EXPIRED">Expired</option>
+      </select>
+
+      <button id="btnExport" class="btnPrimary">Export Excel</button>
+    </div>
+
+    <!-- NO RECORDS -->
     <div id="noRecords" class="noRecords" style="display:none;">
       No records found for this account.
     </div>
 
-    <div class="tableWrapper">
+    <!-- RECORDS TABLE -->
+    <div id="recordsSection" class="tableWrapper">
       <table class="recordsTable">
         <thead>
           <tr>
@@ -66,87 +120,99 @@
             <th>Certificate</th>
             <th>Next test</th>
             <th>Status</th>
+            <th id="adminActionsHeader" style="display:none;">Actions</th>
           </tr>
         </thead>
-        <tbody id="recordsBody">
-          <!-- JS dolduracak -->
-        </tbody>
+        <tbody id="recordsBody"></tbody>
       </table>
+    </div>
+
+    <!-- DASHBOARD SECTION -->
+    <div id="dashboardSection" style="display:none; margin-top:20px;">
+
+      <div class="dashGrid">
+        <div class="dashCard">
+          <h3>Total Tests</h3>
+          <div id="dashTotal" class="dashNumber">0</div>
+        </div>
+
+        <div class="dashCard">
+          <h3>Expired</h3>
+          <div id="dashExpired" class="dashNumber">0</div>
+        </div>
+
+        <div class="dashCard">
+          <h3>Due Soon</h3>
+          <div id="dashSoon" class="dashNumber">0</div>
+        </div>
+      </div>
+
+      <div class="dashCharts">
+        <div class="chartBox">
+          <h3>Test Types Distribution</h3>
+          <canvas id="chartTypes"></canvas>
+        </div>
+
+        <div class="chartBox">
+          <h3>Tests by Year</h3>
+          <canvas id="chartYears"></canvas>
+        </div>
+      </div>
     </div>
 
     <!-- MODAL -->
     <div id="recordModal" class="loginModal">
-      <div class="loginBox">
-        <h2 id="recordModalTitle">Yeni Test Kaydı</h2>
+      <div class="loginBox recordGrid">
 
-        <label>Class</label>
-        <select id="recClass">
-          <option value="TL">Türk Loydu (TL)</option>
-          <option value="BV">Bureau Veritas (BV)</option>
-          <option value="DNV">DNV</option>
-          <option value="ABS">ABS</option>
-          <option value="LR">Lloyd’s Register (LR)</option>
-          <option value="RINA">RINA</option>
-          <option value="ClassNK">ClassNK</option>
-        </select>
+        <h2 id="recordModalTitle" class="modalTitle">Yeni Test Kaydı</h2>
 
-        <label>Firma</label>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <select id="recCompany">
-            <option value="TP Offshore">TP Offshore</option>
-            <option value="MEDLOG">MEDLOG</option>
-            <option value="Reederei NORD">Reederei NORD</option>
-          </select>
-          <button id="btnAddCompany" class="btnPrimary" style="padding:4px 10px;">+</button>
+        <!-- LEFT COLUMN -->
+        <div class="gridLeft">
+
+          <label>Class</label>
+          <select id="recClass"></select>
+
+          <label>Gemi adı</label>
+          <input type="text" id="recShip">
+
+          <label>Test Tipi</label>
+          <select id="recDevice"></select>
+
+          <label>Test tarihi</label>
+          <input type="date" id="recDate">
+
+          <label>PDF Sertifika Yükle</label>
+          <input type="file" id="pdfUpload" accept=".pdf">
+
         </div>
 
-        <div id="newCompanyBox" style="display:none; margin-top:8px;">
-          <input type="text" id="newCompanyInput" placeholder="Yeni firma adı">
-          <button id="saveCompany" class="btnPrimary" style="padding:4px 10px;">Ekle</button>
+        <!-- RIGHT COLUMN -->
+        <div class="gridRight">
+
+          <label>Firma</label>
+          <select id="recCompany"></select>
+
+          <label>Lokasyon</label>
+          <input type="text" id="recLocation">
+
+          <label>Seri numarası</label>
+          <input type="text" id="recSerial">
+
+          <label>Sonraki test tarihi</label>
+          <input type="date" id="recNextTest">
+
+          <label>Sertifika dosya adı</label>
+          <input type="text" id="recCert" placeholder="cert-xxxx.pdf">
+
         </div>
 
-        <label>Gemi adı</label>
-        <input type="text" id="recShip">
-
-        <label>Test Tipi</label>
-        <select id="recDevice">
-          <option value="Vibration Test">Vibration Test</option>
-          <option value="ACB Test">ACB Test</option>
-          <option value="Busbar Test">Busbar Test</option>
-          <option value="Insulation & Continuity Test">Insulation & Continuity Test</option>
-          <option value="Earth Fault Loop Test">Earth Fault Loop Test</option>
-          <option value="Grounding Test">Grounding Test</option>
-          <option value="Thermal Imaging (IR)">Thermal Imaging (IR)</option>
-          <option value="Megger Test">Megger Test</option>
-          <option value="Harmonic Analysis">Harmonic Analysis</option>
-          <option value="Load Test">Load Test</option>
-          <option value="Fire Detection Loop Test">Fire Detection Loop Test</option>
-          <option value="Bridge Equipment Power Supply Test">Bridge Equipment Power Supply Test</option>
-          <option value="Service Report">Service Report</option>
-        </select>
-
-        <label>Seri numarası</label>
-        <input type="text" id="recSerial">
-
-        <label>Lokasyon</label>
-        <input type="text" id="recLocation">
-
-        <label>Test tarihi</label>
-        <input type="date" id="recDate">
-
-        <label>Sertifika dosya adı (PDF)</label>
-        <input type="text" id="recCert" placeholder="cert-xxxx.pdf">
-
-        <label for="pdfUpload">PDF Sertifika Yükle:</label>
-        <input type="file" id="pdfUpload" accept=".pdf">
-
-        <label>Sonraki test tarihi</label>
-        <input type="date" id="recNextTest">
-
-        <button id="btnSaveRecord" class="btnPrimary">Kaydet</button>
-        <button id="btnCancelRecord" class="btnGhost">İptal</button>
+        <div class="modalButtons">
+          <button id="btnSaveRecord" class="btnPrimary">Kaydet</button>
+          <button id="btnCancelRecord" class="btnGhost">İptal</button>
+        </div>
 
         <p id="recordError" class="loginError"></p>
+
       </div>
     </div>
 
