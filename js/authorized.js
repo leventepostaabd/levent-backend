@@ -1,38 +1,35 @@
-// js/authorized.js
-
+// ============================================================
+//  GLOBAL STATE
+// ============================================================
 let shipRecords = {};
 let currentUser = null;
 let loginType = null;
 let editRecordInfo = null;
 
-// ------------------------------------------------------------
-// STATUS FONKSİYONU
-// ------------------------------------------------------------
+// ============================================================
+//  STATUS FUNCTION
+// ============================================================
 function getStatus(nextTestDate) {
-  if (!nextTestDate) {
-    return { cls: "statusUnknown", label: "Unknown" };
-  }
+  if (!nextTestDate) return { cls: "statusUnknown", label: "Unknown" };
 
   const today = new Date();
   const testDate = new Date(nextTestDate);
 
-  if (testDate < today) {
-    return { cls: "statusExpired", label: "Expired" };
-  }
+  if (testDate < today) return { cls: "statusExpired", label: "Expired" };
 
   const diff = testDate - today;
   const days = diff / (1000 * 60 * 60 * 24);
 
-  if (days < 30) {
-    return { cls: "statusSoon", label: "Due Soon" };
-  }
+  if (days < 30) return { cls: "statusSoon", label: "Due Soon" };
 
   return { cls: "statusOK", label: "OK" };
 }
 
+// ============================================================
+//  PAGE LOAD
+// ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
-  // 1) Giriş kontrolü
   currentUser = localStorage.getItem("authorizedUser");
   loginType = localStorage.getItem("loginType");
 
@@ -41,57 +38,68 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // CLASS / COMPANY → admin butonlarını DOM’dan tamamen kaldır
+  // CLASS / COMPANY → admin butonlarını kaldır
   if (loginType !== "ADMIN") {
     const btnNew = document.getElementById("btnNewRecord");
     if (btnNew) btnNew.remove();
 
     const modal = document.getElementById("recordModal");
     if (modal) modal.remove();
+
+    const adminActionsHeader = document.getElementById("adminActionsHeader");
+    if (adminActionsHeader) adminActionsHeader.style.display = "none";
   }
 
-  // 2) Kullanıcı adını başlığa yaz
-  const userEl = document.getElementById("recordsUser");
-  if (userEl) {
-    userEl.textContent = `Authorized account: ${currentUser} (${loginType})`;
-  }
-
-  // 3) Kayıtları backend'den çek
+  // Kayıtları backend'den çek
   fetch("https://levent-backend-zxel.onrender.com/api/getRecords")
     .then(res => res.json())
     .then(data => {
       shipRecords = data || {};
       initForUser();
+      initFilters();
+      initDashboardTab();
     })
     .catch(err => {
       console.error("Kayıtlar yüklenemedi", err);
       document.getElementById("noRecords").style.display = "block";
     });
 
-  // 4) Modal kapatma
+  // Modal kapatma
   const btnCancel = document.getElementById("btnCancelRecord");
   if (btnCancel) btnCancel.addEventListener("click", closeRecordModal);
 
-  // 5) Kaydet butonu
+  // Kaydet butonu
   const btnSave = document.getElementById("btnSaveRecord");
   if (btnSave) {
     btnSave.addEventListener("click", () => {
       uploadPDF((filename) => {
-        if (filename) {
-          document.getElementById("recCert").value = filename;
-        }
+        if (filename) document.getElementById("recCert").value = filename;
         saveRecordFromModal();
       });
     });
   }
+
+  // Export Excel
+  const btnExport = document.getElementById("btnExport");
+  if (btnExport) btnExport.addEventListener("click", exportCSV);
+
+  // Search
+  const searchBox = document.getElementById("searchBox");
+  if (searchBox) {
+    searchBox.addEventListener("input", applyFilters);
+  }
+
+  // Filters
+  ["filterClass", "filterType", "filterYear", "filterStatus"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("change", applyFilters);
+  });
 });
 
-
-// ------------------------------------------------------------
-// KULLANICI YETKİ BAŞLANGICI
-// ------------------------------------------------------------
+// ============================================================
+//  INIT USER
+// ============================================================
 function initForUser() {
-
   const allRecords = collectRecordsForUser();
   renderTable(allRecords);
 
@@ -102,23 +110,14 @@ function initForUser() {
     setupAdminPanel();
   } else {
     adminPanel.style.display = "none";
-
-    // Ek güvenlik: admin butonlarını DOM’dan tamamen kaldır
-    const btnNew = document.getElementById("btnNewRecord");
-    if (btnNew) btnNew.remove();
-
-    const modal = document.getElementById("recordModal");
-    if (modal) modal.remove();
   }
 }
 
-
-// ------------------------------------------------------------
-// KAYIT FİLTRELEME
-// ------------------------------------------------------------
+// ============================================================
+//  COLLECT RECORDS
+// ============================================================
 function collectRecordsForUser() {
 
-  // ADMIN → tüm kayıtlar
   if (loginType === "ADMIN") {
     const all = [];
     Object.entries(shipRecords).forEach(([company, arr]) => {
@@ -127,25 +126,13 @@ function collectRecordsForUser() {
     return all;
   }
 
-  // CLASS → sadece kendi class kayıtları
-  if (loginType === "CLASS") {
-    const list = shipRecords[currentUser] || [];
-    return list.map(r => ({ ...r, company: currentUser }));
-  }
-
-  // COMPANY → sadece kendi şirket kayıtları
-  if (loginType === "COMPANY") {
-    const list = shipRecords[currentUser] || [];
-    return list.map(r => ({ ...r, company: currentUser }));
-  }
-
-  return [];
+  const list = shipRecords[currentUser] || [];
+  return list.map(r => ({ ...r, company: currentUser }));
 }
 
-
-// ------------------------------------------------------------
-// TABLO
-// ------------------------------------------------------------
+// ============================================================
+//  RENDER TABLE
+// ============================================================
 function renderTable(records) {
   const tbody = document.getElementById("recordsBody");
   const noRecordsEl = document.getElementById("noRecords");
@@ -157,9 +144,7 @@ function renderTable(records) {
     return;
   }
 
-  // Liste varsa noRecords tamamen kaldır
   noRecordsEl.style.display = "none";
-  noRecordsEl.remove();
 
   records.forEach(rec => {
     const tr = document.createElement("tr");
@@ -178,7 +163,6 @@ function renderTable(records) {
       }</td>
       <td>${rec.nextTest || ""}</td>
       <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
-
       ${
         loginType === "ADMIN"
           ? `<td>
@@ -192,46 +176,196 @@ function renderTable(records) {
     tbody.appendChild(tr);
   });
 
-  if (loginType === "ADMIN") {
-    attachAdminRowEvents();
-  }
+  if (loginType === "ADMIN") attachAdminRowEvents();
 }
 
+// ============================================================
+//  FILTERS + SEARCH
+// ============================================================
+function initFilters() {
+  const yearSelect = document.getElementById("filterYear");
+  const all = collectRecordsForUser();
 
-// ------------------------------------------------------------
-// ADMIN PANELİ
-// ------------------------------------------------------------
+  const years = [...new Set(all.map(r => r.date?.split("-")[0]))].filter(Boolean);
+
+  years.forEach(y => {
+    const opt = document.createElement("option");
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  });
+}
+
+function applyFilters() {
+  let list = collectRecordsForUser();
+
+  const q = document.getElementById("searchBox").value.toLowerCase();
+  const fClass = document.getElementById("filterClass").value;
+  const fType = document.getElementById("filterType").value;
+  const fYear = document.getElementById("filterYear").value;
+  const fStatus = document.getElementById("filterStatus").value;
+
+  list = list.filter(r =>
+    (r.ship || "").toLowerCase().includes(q) ||
+    (r.location || "").toLowerCase().includes(q) ||
+    (r.device || "").toLowerCase().includes(q) ||
+    (r.serial || "").toLowerCase().includes(q)
+  );
+
+  if (fClass !== "ALL") list = list.filter(r => r.class === fClass);
+  if (fType !== "ALL") list = list.filter(r => r.device === fType);
+  if (fYear !== "ALL") list = list.filter(r => r.date?.startsWith(fYear));
+
+  if (fStatus !== "ALL") {
+    list = list.filter(r => {
+      const s = getStatus(r.nextTest).label;
+      if (fStatus === "OK") return s === "OK";
+      if (fStatus === "SOON") return s === "Due Soon";
+      if (fStatus === "EXPIRED") return s === "Expired";
+    });
+  }
+
+  renderTable(list);
+  updateDashboard(list);
+}
+
+// ============================================================
+//  EXPORT CSV
+// ============================================================
+function exportCSV() {
+  const rows = collectRecordsForUser();
+  let csv = "Ship,Location,Date,Device,Serial,Certificate,NextTest\n";
+
+  rows.forEach(r => {
+    csv += `${r.ship},${r.location},${r.date},${r.device},${r.serial},${r.certificate},${r.nextTest}\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "records.csv";
+  a.click();
+}
+
+// ============================================================
+//  DASHBOARD
+// ============================================================
+let chartTypes = null;
+let chartYears = null;
+
+function initDashboardTab() {
+  const tabRecords = document.getElementById("tabRecords");
+  const tabDashboard = document.getElementById("tabDashboard");
+
+  const recordsSection = document.getElementById("recordsSection");
+  const dashboardSection = document.getElementById("dashboardSection");
+
+  tabRecords.addEventListener("click", () => {
+    tabRecords.classList.add("active");
+    tabDashboard.classList.remove("active");
+    recordsSection.style.display = "block";
+    dashboardSection.style.display = "none";
+  });
+
+  tabDashboard.addEventListener("click", () => {
+    tabDashboard.classList.add("active");
+    tabRecords.classList.remove("active");
+    recordsSection.style.display = "none";
+    dashboardSection.style.display = "block";
+
+    updateDashboard(collectRecordsForUser());
+  });
+}
+
+function updateDashboard(list) {
+  document.getElementById("dashTotal").textContent = list.length;
+  document.getElementById("dashExpired").textContent =
+    list.filter(r => getStatus(r.nextTest).label === "Expired").length;
+  document.getElementById("dashSoon").textContent =
+    list.filter(r => getStatus(r.nextTest).label === "Due Soon").length;
+
+  // TYPES CHART
+  const typeCounts = {};
+  list.forEach(r => {
+    typeCounts[r.device] = (typeCounts[r.device] || 0) + 1;
+  });
+
+  const ctx1 = document.getElementById("chartTypes");
+  if (chartTypes) chartTypes.destroy();
+  chartTypes = new Chart(ctx1, {
+    type: "pie",
+    data: {
+      labels: Object.keys(typeCounts),
+      datasets: [{
+        data: Object.values(typeCounts),
+        backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"]
+      }]
+    }
+  });
+
+  // YEARS CHART
+  const yearCounts = {};
+  list.forEach(r => {
+    const y = r.date?.split("-")[0];
+    if (y) yearCounts[y] = (yearCounts[y] || 0) + 1;
+  });
+
+  const ctx2 = document.getElementById("chartYears");
+  if (chartYears) chartYears.destroy();
+  chartYears = new Chart(ctx2, {
+    type: "bar",
+    data: {
+      labels: Object.keys(yearCounts),
+      datasets: [{
+        label: "Tests",
+        data: Object.values(yearCounts),
+        backgroundColor: "#3b82f6"
+      }]
+    }
+  });
+}
+
+// ============================================================
+//  ADMIN PANEL
+// ============================================================
 function setupAdminPanel() {
   const btnNew = document.getElementById("btnNewRecord");
-  if (btnNew) {
-    btnNew.addEventListener("click", () => openRecordModal("new"));
-  }
+  if (btnNew) btnNew.addEventListener("click", () => openRecordModal("new"));
 }
 
-
-// ------------------------------------------------------------
-// MODAL
-// ------------------------------------------------------------
+// ============================================================
+//  MODAL
+// ============================================================
 function openRecordModal(mode, info = null) {
-
   if (loginType !== "ADMIN") return;
 
   editRecordInfo = null;
   document.getElementById("recordError").textContent = "";
 
-  // Class dropdown her açılışta doldurulsun
+  // Class dropdown
   const classSelect = document.getElementById("recClass");
-  if (classSelect) {
-    classSelect.innerHTML = `
-      <option value="TL">Türk Loydu (TL)</option>
-      <option value="BV">Bureau Veritas (BV)</option>
-      <option value="DNV">DNV</option>
-      <option value="ABS">ABS</option>
-      <option value="LR">Lloyd’s Register (LR)</option>
-      <option value="RINA">RINA</option>
-      <option value="ClassNK">ClassNK</option>
-    `;
-  }
+  classSelect.innerHTML = `
+    <option value="TL">TL</option>
+    <option value="BV">BV</option>
+    <option value="DNV">DNV</option>
+    <option value="ABS">ABS</option>
+    <option value="LR">LR</option>
+    <option value="RINA">RINA</option>
+    <option value="ClassNK">ClassNK</option>
+  `;
+
+  // Company dropdown
+  const companySelect = document.getElementById("recCompany");
+  companySelect.innerHTML = `
+    <option value="TP Offshore">TP Offshore</option>
+    <option value="MEDLOG">MEDLOG</option>
+    <option value="Reederei NORD">Reederei NORD</option>
+  `;
+
+  // Device dropdown
+  const deviceSelect = document.getElementById("recDevice");
+  deviceSelect.innerHTML = document.getElementById("filterType").innerHTML;
 
   if (mode === "new") {
     document.getElementById("recordModalTitle").textContent = "Yeni Test Kaydı";
@@ -249,10 +383,9 @@ function closeRecordModal() {
   document.getElementById("recordModal").style.display = "none";
 }
 
-
-// ------------------------------------------------------------
-// FORM
-// ------------------------------------------------------------
+// ============================================================
+//  FORM
+// ============================================================
 function clearRecordForm() {
   document.getElementById("recCompany").value = "TP Offshore";
   document.getElementById("recShip").value = "";
@@ -281,12 +414,10 @@ function fillRecordForm(company, id) {
   document.getElementById("recNextTest").value = rec.nextTest || "";
 }
 
-
-// ------------------------------------------------------------
-// KAYIT KAYDETME
-// ------------------------------------------------------------
+// ============================================================
+//  SAVE RECORD
+// ============================================================
 function saveRecordFromModal() {
-
   if (loginType !== "ADMIN") return;
 
   const company = document.getElementById("recCompany").value;
@@ -343,12 +474,10 @@ function saveRecordFromModal() {
     });
 }
 
-
-// ------------------------------------------------------------
-// KAYIT SİLME
-// ------------------------------------------------------------
+// ============================================================
+//  DELETE RECORD
+// ============================================================
 function deleteRecord(company, id) {
-
   if (loginType !== "ADMIN") return;
 
   if (!confirm("Bu kaydı silmek istediğinize emin misiniz?")) return;
@@ -369,10 +498,9 @@ function deleteRecord(company, id) {
     });
 }
 
-
-// ------------------------------------------------------------
-// PDF UPLOAD
-// ------------------------------------------------------------
+// ============================================================
+//  PDF UPLOAD
+// ============================================================
 function uploadPDF(callback) {
   const fileInput = document.getElementById("pdfUpload");
   if (!fileInput || !fileInput.files.length) {
@@ -383,7 +511,7 @@ function uploadPDF(callback) {
   const formData = new FormData();
   formData.append("pdf", fileInput.files[0]);
 
-  fetch("https://levent-backend-zxel.onrender.com/api/uploadCert", {
+    fetch("https://levent-backend-zxel.onrender.com/api/uploadCert", {
     method: "POST",
     body: formData
   })
@@ -393,4 +521,25 @@ function uploadPDF(callback) {
       console.error("PDF yüklenemedi", err);
       callback(null);
     });
+}
+
+// ============================================================
+//  ADMIN ROW EVENTS (EDIT / DELETE)
+// ============================================================
+function attachAdminRowEvents() {
+  document.querySelectorAll("[data-edit]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-edit");
+      const company = btn.getAttribute("data-company");
+      openRecordModal("edit", { id, company });
+    });
+  });
+
+  document.querySelectorAll("[data-del]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-del");
+      const company = btn.getAttribute("data-company");
+      deleteRecord(company, id);
+    });
+  });
 }
