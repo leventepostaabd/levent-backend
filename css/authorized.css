@@ -406,3 +406,9 @@
   margin-top: 12px;
 }
 
+#recCompany,
+#recClass,
+#recDevice {
+  height: 38px !important;
+}
+
