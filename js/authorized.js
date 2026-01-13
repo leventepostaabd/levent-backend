@@ -599,3 +599,31 @@ function openPDFWindow(url) {
     </html>
   `);
 }
+document.getElementById("btnAddCompany").addEventListener("click", () => {
+  document.getElementById("companyModal").style.display = "flex";
+});
+document.getElementById("btnSaveCompany").addEventListener("click", () => {
+  const name = document.getElementById("newCompanyName").value.trim();
+
+  if (!name) {
+    document.getElementById("companyError").textContent = "Firma adı boş olamaz.";
+    return;
+  }
+
+  // Dropdown’a ekle
+  const sel = document.getElementById("recCompany");
+  const opt = document.createElement("option");
+  opt.value = name;
+  opt.textContent = name;
+  sel.appendChild(opt);
+  sel.value = name;
+
+  // Modal kapat
+  document.getElementById("companyModal").style.display = "none";
+  document.getElementById("newCompanyName").value = "";
+  document.getElementById("companyError").textContent = "";
+});
+document.getElementById("btnCancelCompany").addEventListener("click", () => {
+  document.getElementById("companyModal").style.display = "none";
+});
+
