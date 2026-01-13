@@ -543,3 +543,40 @@ function attachAdminRowEvents() {
     });
   });
 }
+// ============================================================
+// PDF PREVIEW MODAL
+// ============================================================
+
+// Certificate linklerine tıklamayı yakala
+document.addEventListener("click", (e) => {
+  if (e.target.tagName === "A" && e.target.closest("td")) {
+    const href = e.target.getAttribute("href");
+
+    if (href && href.includes("/upload/")) {
+      e.preventDefault();
+      openPDFPreview(href);
+    }
+  }
+});
+
+function openPDFPreview(url) {
+  const modal = document.getElementById("pdfPreviewModal");
+  const frame = document.getElementById("pdfFrame");
+
+  frame.src = url;
+  modal.style.display = "flex";
+}
+
+document.getElementById("btnClosePDF").addEventListener("click", () => {
+  const modal = document.getElementById("pdfPreviewModal");
+  const frame = document.getElementById("pdfFrame");
+
+  frame.src = "";
+  modal.style.display = "none";
+});
+
+document.getElementById("btnPrintPDF").addEventListener("click", () => {
+  const frame = document.getElementById("pdfFrame");
+  frame.contentWindow.print();
+});
+
