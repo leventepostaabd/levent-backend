@@ -71,19 +71,24 @@
   font-size: 11px;
 }
 
-.badge-ok {
+.statusOK {
   background: rgba(34,197,94,0.15);
   color: #4ade80;
 }
 
-.badge-soon {
+.statusSoon {
   background: rgba(250,204,21,0.15);
   color: #facc15;
 }
 
-.badge-overdue {
+.statusExpired {
   background: rgba(248,113,113,0.15);
   color: #f97373;
+}
+
+.statusUnknown {
+  background: rgba(148,163,184,0.15);
+  color: #e5e7eb;
 }
 
 .noRecords {
@@ -92,22 +97,10 @@
   background: rgba(248,113,113,0.08);
   border: 1px solid rgba(248,113,113,0.4);
   font-size: 13px;
+  margin-top: 12px;
 }
 
-@media (max-width: 700px) {
-  .recordsCard {
-    padding: 20px 16px;
-  }
-
-  .recordsHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .recordsHeader h1 {
-    font-size: 20px;
-  }
-}
+/* ADMIN PANEL */
 .adminPanel {
   margin-bottom: 16px;
   padding: 14px 16px;
@@ -129,20 +122,253 @@
 .top-bar {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
+/* TABS */
+.adminTabs {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+
+.tabButton {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.5);
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.tabButton.active {
+  background: rgba(59,130,246,0.18);
+  border-color: #3b82f6;
+  color: #bfdbfe;
+}
+
+/* FILTER BAR */
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(15,23,42,0.85);
+  border: 1px solid rgba(148,163,184,0.35);
+}
+
+.filterInput {
+  flex: 1;
+  min-width: 160px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.5);
+  background: rgba(15,23,42,0.9);
+  color: #e5e7eb;
+  font-size: 13px;
+}
+
+.filterInput::placeholder {
+  color: rgba(148,163,184,0.8);
+}
+
+.filterSelect {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.5);
+  background: rgba(15,23,42,0.9);
+  color: #e5e7eb;
+  font-size: 13px;
+}
+
+.filterSelect option {
+  background: rgba(15,23,42,0.95);
+  color: #e5e7eb;
+}
+
+/* BUTTONS */
 .btnPrimary {
   padding: 10px 18px;
-  background: #007bff;
+  background: #3b82f6;
   color: #fff;
   border-radius: 6px;
   border: none;
   cursor: pointer;
   font-weight: 600;
+  font-size: 13px;
   transition: 0.2s;
 }
 
 .btnPrimary:hover {
-  background: #005fcc;
+  background: #2563eb;
+}
+
+.btnGhost {
+  padding: 9px 16px;
+  background: transparent;
+  color: #e5e7eb;
+  border-radius: 6px;
+  border: 1px solid rgba(148,163,184,0.7);
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.btnGhost:hover {
+  background: rgba(148,163,184,0.12);
+}
+
+.btnTiny {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+/* DASHBOARD */
+.dashGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.dashCard {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(15,23,42,0.9);
+  border: 1px solid rgba(148,163,184,0.4);
+}
+
+.dashCard h3 {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.dashNumber {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.dashCharts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 16px;
+}
+
+.chartBox {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(15,23,42,0.9);
+  border: 1px solid rgba(148,163,184,0.4);
+}
+
+.chartBox h3 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* MODAL GRID LAYOUT */
+.recordGrid {
+  width: 720px;
+  max-width: 95vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+  position: relative;
+}
+
+.modalTitle {
+  grid-column: 1 / -1;
+  margin-bottom: 4px;
+}
+
+.gridLeft,
+.gridRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginBox label {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.loginBox select,
+.loginBox input {
+  width: 100%;
+  margin: 4px 0 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(15,23,42,0.9);
+  color: #fff;
+  font-size: 13px;
+}
+
+.loginBox select {
+  color: #fff;
+  background: rgba(15,23,42,0.9);
+}
+
+.loginBox option {
+  background: rgba(15,23,42,0.95);
+  color: #fff;
+}
+
+.modalButtons {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.loginError {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  color: #f87171;
+  font-size: 13px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .recordGrid {
+    grid-template-columns: 1fr;
+  }
+  .dashGrid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+  .dashCharts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .recordsCard {
+    padding: 20px 16px;
+  }
+
+  .recordsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .recordsHeader h1 {
+    font-size: 20px;
+  }
+
+  .filterBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterInput {
+    width: 100%;
+  }
 }
