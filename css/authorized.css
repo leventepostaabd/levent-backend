@@ -411,4 +411,11 @@
 #recDevice {
   height: 38px !important;
 }
+#recCompany,
+#recClass,
+#recDevice {
+  height: 38px !important;
+  overflow: hidden;
+}
+
 
