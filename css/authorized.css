@@ -372,3 +372,37 @@
     width: 100%;
   }
 }
+/* PDF PREVIEW MODAL */
+.pdfPreviewBox {
+  background: rgba(15,23,42,0.95);
+  padding: 20px;
+  border-radius: 16px;
+  width: 80vw;
+  max-width: 900px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+}
+
+.pdfTitle {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.pdfFrame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: #000;
+}
+
+.pdfButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
