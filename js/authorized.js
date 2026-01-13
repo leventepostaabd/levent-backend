@@ -365,7 +365,21 @@ function openRecordModal(mode, info = null) {
 
   // Device dropdown
   const deviceSelect = document.getElementById("recDevice");
-  deviceSelect.innerHTML = document.getElementById("filterType").innerHTML;
+  deviceSelect.innerHTML = `
+    <option value="Vibration Test">Vibration Test</option>
+    <option value="ACB Test">ACB Test</option>
+    <option value="Busbar Test">Busbar Test</option>
+    <option value="Insulation & Continuity Test">Insulation & Continuity Test</option>
+    <option value="Earth Fault Loop Test">Earth Fault Loop Test</option>
+    <option value="Grounding Test">Grounding Test</option>
+    <option value="Thermal Imaging (IR)">Thermal Imaging (IR)</option>
+    <option value="Megger Test">Megger Test</option>
+    <option value="Harmonic Analysis">Harmonic Analysis</option>
+    <option value="Load Test">Load Test</option>
+    <option value="Fire Detection Loop Test">Fire Detection Loop Test</option>
+    <option value="Bridge Equipment Power Supply Test">Bridge Equipment Power Supply Test</option>
+    <option value="Service Report">Service Report</option>
+  `;
 
   if (mode === "new") {
     document.getElementById("recordModalTitle").textContent = "Yeni Test Kaydı";
@@ -511,7 +525,7 @@ function uploadPDF(callback) {
   const formData = new FormData();
   formData.append("pdf", fileInput.files[0]);
 
-    fetch("https://levent-backend-zxel.onrender.com/api/uploadCert", {
+  fetch("https://levent-backend-zxel.onrender.com/api/uploadCert", {
     method: "POST",
     body: formData
   })
@@ -543,8 +557,9 @@ function attachAdminRowEvents() {
     });
   });
 }
+
 // ============================================================
-// PDF PREVIEW MODAL
+//  PDF PREVIEW — YENİ PENCEREDE AÇILIR
 // ============================================================
 
 // Certificate linklerine tıklamayı yakala
@@ -554,29 +569,33 @@ document.addEventListener("click", (e) => {
 
     if (href && href.includes("/upload/")) {
       e.preventDefault();
-      openPDFPreview(href);
+      openPDFWindow(href);
     }
   }
 });
 
-function openPDFPreview(url) {
-  const modal = document.getElementById("pdfPreviewModal");
-  const frame = document.getElementById("pdfFrame");
+// Yeni pencere açıp PDF gösteren fonksiyon
+function openPDFWindow(url) {
+  const win = window.open("", "_blank", "width=900,height=700");
 
-  frame.src = url;
-  modal.style.display = "flex";
+  win.document.write(`
+    <html>
+      <head>
+        <title>PDF Preview</title>
+      </head>
+      <body style="margin:0; padding:0; background:#111; color:white; font-family:sans-serif;">
+        
+        <div style="padding:10px; text-align:right;">
+          <button onclick="document.getElementById('pdfFrame').contentWindow.print()" 
+                  style="padding:8px 14px; font-size:14px; cursor:pointer;">
+            Print PDF
+          </button>
+        </div>
+
+        <iframe id="pdfFrame" src="${url}" 
+                style="width:100%; height:90vh; border:none;"></iframe>
+
+      </body>
+    </html>
+  `);
 }
-
-document.getElementById("btnClosePDF").addEventListener("click", () => {
-  const modal = document.getElementById("pdfPreviewModal");
-  const frame = document.getElementById("pdfFrame");
-
-  frame.src = "";
-  modal.style.display = "none";
-});
-
-document.getElementById("btnPrintPDF").addEventListener("click", () => {
-  const frame = document.getElementById("pdfFrame");
-  frame.contentWindow.print();
-});
-
