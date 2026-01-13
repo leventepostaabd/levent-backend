@@ -189,8 +189,12 @@
         <!-- RIGHT COLUMN -->
         <div class="gridRight">
 
-          <label>Firma</label>
-          <select id="recCompany"></select>
+         <label>Firma</label>
+<div style="display:flex; gap:8px; align-items:center;">
+  <select id="recCompany"></select>
+  <button id="btnAddCompany" class="btnPrimary" style="padding:6px 10px;">+</button>
+</div>
+
 
           <label>Lokasyon</label>
           <input type="text" id="recLocation">
@@ -215,7 +219,24 @@
 
       </div>
     </div>
- 
+
+    <!-- YENİ FİRMA EKLEME MODALI -->
+<div id="companyModal" class="loginModal">
+  <div class="loginBox" style="width:350px;">
+    <h2>Yeni Firma Ekle</h2>
+
+    <label>Firma adı</label>
+    <input type="text" id="newCompanyName">
+
+    <div class="modalButtons">
+      <button id="btnSaveCompany" class="btnPrimary">Kaydet</button>
+      <button id="btnCancelCompany" class="btnGhost">İptal</button>
+    </div>
+
+    <p id="companyError" class="loginError"></p>
+  </div>
+</div>
+
   </div>
 </div>
 
