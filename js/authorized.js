@@ -150,28 +150,40 @@ function renderTable(records) {
     const tr = document.createElement("tr");
     const status = getStatus(rec.nextTest);
 
-    tr.innerHTML = `
-      <td>${rec.ship || ""}</td>
-      <td>${rec.location || ""}</td>
-      <td>${rec.date || ""}</td>
-      <td>${rec.device || ""}</td>
-      <td>${rec.serial || ""}</td>
-      <td>${
-        rec.certificate
-          ? `<a href="https://levent-backend-zxel.onrender.com/upload/${rec.certificate}" target="_blank">${rec.certificate}</a>`
-          : ""
-      }</td>
-      <td>${rec.nextTest || ""}</td>
-      <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
-      ${
-        loginType === "ADMIN"
-          ? `<td>
-              <button class="btnGhost btnTiny" data-edit="${rec.id}" data-company="${rec.company}">Düzenle</button>
-              <button class="btnGhost btnTiny" data-del="${rec.id}" data-company="${rec.company}">Sil</button>
-            </td>`
-          : ``
-      }
-    `;
+tr.innerHTML = `
+  <td>${rec.ship}</td>
+  <td>${rec.location}</td>
+  <td>${rec.date}</td>
+  <td>${rec.device}</td>
+  <td>${rec.serial}</td>
+  <td>${
+    rec.certificate
+      ? `<a href="http://localhost:3000/pdf/${rec.certificate}" target="_blank">${rec.certificate}</a>`
+      : ""
+  }</td>
+  <td>${rec.nextTest}</td>
+  <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
+
+  <!-- QR KOLONU -->
+  <td>
+    <a 
+      class="btnGhost btnTiny" 
+      href="report.html?id=${rec.id}" 
+      target="_blank"
+    >
+      QR
+    </a>
+  </td>
+
+  ${
+    loginType === "ADMIN"
+      ? `<td>
+          <button class="btnGhost btnTiny" data-edit="${rec.id}" data-company="${rec.company}">Düzenle</button>
+          <button class="btnGhost btnTiny" data-del="${rec.id}" data-company="${rec.company}">Sil</button>
+        </td>`
+      : ``
+  }
+`;
 
     tbody.appendChild(tr);
   });
