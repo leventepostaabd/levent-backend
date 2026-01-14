@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test Report Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f5f5f5;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .label {
+      font-weight: bold;
+    }
+    .pdf-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Test Report</h2>
+  <div id="info">Loading...</div>
+</div>
+
+<script>
+  // URL'den id parametresini al
+  const urlParams = new URLSearchParams(window.location.search);
+  const recordId = urlParams.get("id");
+
+  if (!recordId) {
+    document.getElementById("info").innerHTML = "Record ID bulunamadı.";
+  } else {
+    loadRecord(recordId);
+  }
+
+  async function loadRecord(id) {
+    try {
+      // 🔥 Render backend URL'si
+      const res = await fetch("https://levent-backend-zxel.onrender.com/api/getRecords");
+      const data = await res.json();
+
+      let found = null;
+
+      // Tüm şirketlerde ara
+      Object.keys(data).forEach(company => {
+        const rec = (data[company] || []).find(r => r.id === id);
+        if (rec) found = { ...rec, company };
+      });
+
+      if (!found) {
+        document.getElementById("info").innerHTML = "Kayıt bulunamadı.";
+        return;
+      }
+
+      // PDF linki
+      const pdfUrl = found.certificate
+        ? `https://levent-backend-zxel.onrender.com/pdf/${found.certificate}`
+        : null;
+
+      document.getElementById("info").innerHTML = `
+        <p><span class="label">Company:</span> ${found.company}</p>
+        <p><span class="label">Ship:</span> ${found.ship}</p>
+        <p><span class="label">Location:</span> ${found.location}</p>
+        <p><span class="label">Test Type:</span> ${found.device}</p>
+        <p><span class="label">Test Date:</span> ${found.date}</p>
+        <p><span class="label">Next Test:</span> ${found.nextTest}</p>
+        ${
+          pdfUrl
+            ? `<a class="pdf-link" href="${pdfUrl}" target="_blank">PDF Dosyasını Aç</a>`
+            : `<p style="color:red;">PDF yüklenmemiş.</p>`
+        }
+      `;
+    } catch (err) {
+      document.getElementById("info").innerHTML = "Sunucuya bağlanılamadı.";
+    }
+  }
+</script>
+
+</body>
+</html>
