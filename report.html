@@ -54,8 +54,7 @@
 
   async function loadRecord(id) {
     try {
-      // 🔥 Render backend URL'si
-      const res = await fetch("https://levent-backend-zxel.onrender.com/api/getRecords");
+      const res = await fetch("http://localhost:3000/api/getRecords");
       const data = await res.json();
 
       let found = null;
@@ -73,7 +72,7 @@
 
       // PDF linki
       const pdfUrl = found.certificate
-        ? `https://levent-backend-zxel.onrender.com/pdf/${found.certificate}`
+        ? `http://localhost:3000/pdf/${found.certificate}`
         : null;
 
       document.getElementById("info").innerHTML = `
