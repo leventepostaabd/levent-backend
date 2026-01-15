@@ -1,4 +1,10 @@
 // ============================================================
+//  API BASE (LOCAL / LIVE OTOMATİK ALGILAMA)
+// ============================================================
+const API_BASE = "http://localhost:3000";
+
+
+// ============================================================
 //  GLOBAL STATE
 // ============================================================
 let shipRecords = {};
@@ -29,7 +35,6 @@ function getStatus(nextTestDate) {
 //  PAGE LOAD
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-
   currentUser = localStorage.getItem("authorizedUser");
   loginType = localStorage.getItem("loginType");
 
@@ -51,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Kayıtları backend'den çek
-  fetch("https://levent-backend-zxel.onrender.com/api/getRecords")
+  fetch(`${API_BASE}/api/getRecords`)
     .then(res => res.json())
     .then(data => {
       shipRecords = data || {};
@@ -68,16 +73,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnCancel = document.getElementById("btnCancelRecord");
   if (btnCancel) btnCancel.addEventListener("click", closeRecordModal);
 
-  // Kaydet butonu
-  const btnSave = document.getElementById("btnSaveRecord");
-  if (btnSave) {
-    btnSave.addEventListener("click", () => {
-      uploadPDF((filename) => {
-        if (filename) document.getElementById("recCert").value = filename;
-        saveRecordFromModal();
-      });
+ let uploadedPdfFilename = ""; // PDF adını burada tutacağız
+
+// Kaydet butonu → önce PDF upload → sonra kayıt
+const btnSave = document.getElementById("btnSaveRecord");
+if (btnSave) {
+  btnSave.addEventListener("click", () => {
+    uploadPDF((filename) => {
+      if (!filename) {
+        alert("PDF yüklenemedi!");
+        return;
+      }
+
+      // PDF adı global değişkene yazılıyor
+      uploadedPdfFilename = filename;
+
+      // PDF başarıyla yüklendikten sonra kayıt gönder
+      saveRecordFromModal();
     });
-  }
+  });
+}
+
 
   // Export Excel
   const btnExport = document.getElementById("btnExport");
@@ -117,7 +133,6 @@ function initForUser() {
 //  COLLECT RECORDS
 // ============================================================
 function collectRecordsForUser() {
-
   if (loginType === "ADMIN") {
     const all = [];
     Object.entries(shipRecords).forEach(([company, arr]) => {
@@ -131,7 +146,7 @@ function collectRecordsForUser() {
 }
 
 // ============================================================
-//  RENDER TABLE
+//  RENDER TABLE (QR ENTEGRE EDİLDİ)
 // ============================================================
 function renderTable(records) {
   const tbody = document.getElementById("recordsBody");
@@ -150,40 +165,43 @@ function renderTable(records) {
     const tr = document.createElement("tr");
     const status = getStatus(rec.nextTest);
 
-tr.innerHTML = `
-  <td>${rec.ship}</td>
-  <td>${rec.location}</td>
-  <td>${rec.date}</td>
-  <td>${rec.device}</td>
-  <td>${rec.serial}</td>
-  <td>${
-    rec.certificate
-      ? `<a href="http://localhost:3000/pdf/${rec.certificate}" target="_blank">${rec.certificate}</a>`
-      : ""
-  }</td>
-  <td>${rec.nextTest}</td>
-  <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
+    tr.innerHTML = `
+      <td>${rec.ship || ""}</td>
+      <td>${rec.location || ""}</td>
+      <td>${rec.date || ""}</td>
+      <td>${rec.device || ""}</td>
+      <td>${rec.serial || ""}</td>
 
-  <!-- QR KOLONU -->
-  <td>
-    <a 
-      class="btnGhost btnTiny" 
-      href="report.html?id=${rec.id}" 
-      target="_blank"
-    >
-      QR
-    </a>
-  </td>
+      <td>
+        ${
+          rec.pdfFilename
+            ? `<a href="${API_BASE}/upload/${rec.pdfFilename}" target="_blank">${rec.pdfFilename}</a>`
+            : ""
+        }
+      </td>
 
+      <td>${rec.nextTest || ""}</td>
+      <td><span class="badgeStatus ${status.cls}">${status.label}</span></td>
+
+      <!-- QR KOLONU -->
+     <td>
   ${
-    loginType === "ADMIN"
-      ? `<td>
-          <button class="btnGhost btnTiny" data-edit="${rec.id}" data-company="${rec.company}">Düzenle</button>
-          <button class="btnGhost btnTiny" data-del="${rec.id}" data-company="${rec.company}">Sil</button>
-        </td>`
-      : ``
+    rec.id
+      ? `<a href="${API_BASE}/label/${rec.id}" target="_blank" class="btnGhost btnTiny">Yazdır</a>`
+      : ""
   }
-`;
+</td>
+
+
+      ${
+        loginType === "ADMIN"
+          ? `<td>
+              <button class="btnGhost btnTiny" data-edit="${rec.id}" data-company="${rec.company}">Düzenle</button>
+              <button class="btnGhost btnTiny" data-del="${rec.id}" data-company="${rec.company}">Sil</button>
+            </td>`
+          : ``
+      }
+    `;
 
     tbody.appendChild(tr);
   });
@@ -249,7 +267,7 @@ function exportCSV() {
   let csv = "Ship,Location,Date,Device,Serial,Certificate,NextTest\n";
 
   rows.forEach(r => {
-    csv += `${r.ship},${r.location},${r.date},${r.device},${r.serial},${r.certificate},${r.nextTest}\n`;
+    csv += `${r.ship},${r.location},${r.date},${r.device},${r.serial},${r.pdfFilename},${r.nextTest}\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv" });
@@ -373,6 +391,8 @@ function openRecordModal(mode, info = null) {
     <option value="TP Offshore">TP Offshore</option>
     <option value="MEDLOG">MEDLOG</option>
     <option value="Reederei NORD">Reederei NORD</option>
+    <option value="Polaris">Polaris</option>
+    <option value="Levent Marine">Levent Marine</option>
   `;
 
   // Device dropdown
@@ -436,12 +456,12 @@ function fillRecordForm(company, id) {
   document.getElementById("recDate").value = rec.date || "";
   document.getElementById("recDevice").value = rec.device || "";
   document.getElementById("recSerial").value = rec.serial || "";
-  document.getElementById("recCert").value = rec.certificate || "";
+  document.getElementById("recCert").value = rec.pdfFilename || "";
   document.getElementById("recNextTest").value = rec.nextTest || "";
 }
 
 // ============================================================
-//  SAVE RECORD
+//  SAVE RECORD (QR SİSTEMİNE TAM UYUMLU - FINAL)
 // ============================================================
 function saveRecordFromModal() {
   if (loginType !== "ADMIN") return;
@@ -452,8 +472,10 @@ function saveRecordFromModal() {
   const date = document.getElementById("recDate").value;
   const device = document.getElementById("recDevice").value.trim();
   const serial = document.getElementById("recSerial").value.trim();
-  const cert = document.getElementById("recCert").value.trim();
   const nextTest = document.getElementById("recNextTest").value;
+
+  // PDF adı artık input'tan değil → uploadPDF'ten geliyor
+  const pdfFilename = uploadedPdfFilename;
 
   if (!ship || !date || !device) {
     document.getElementById("recordError").textContent =
@@ -461,35 +483,29 @@ function saveRecordFromModal() {
     return;
   }
 
-  const newRecord = {
-    id: editRecordInfo ? editRecordInfo.id : company + "-" + Date.now(),
+  const record = {
     ship,
     location,
     date,
     device,
     serial,
-    certificate: cert,
+    pdfFilename,
     nextTest
   };
 
-  fetch("https://levent-backend-zxel.onrender.com/api/saveRecord", {
+  console.log("GÖNDERİLEN RECORD:", record);
+
+  fetch(`${API_BASE}/api/saveRecord`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ company, record: newRecord })
+    body: JSON.stringify({ company, record })
   })
     .then(res => res.json())
-    .then(() => {
+    .then(data => {
+      console.log("BACKEND'DEN GELEN DATA:", data);
       if (!shipRecords[company]) shipRecords[company] = [];
-      const list = shipRecords[company];
+      shipRecords[company].push(data.record);
 
-      if (editRecordInfo) {
-        const idx = list.findIndex(r => r.id === editRecordInfo.id);
-        if (idx !== -1) list[idx] = newRecord;
-      } else {
-        list.push(newRecord);
-      }
-
-      shipRecords[company] = list;
       renderTable(collectRecordsForUser());
       closeRecordModal();
     })
@@ -508,7 +524,7 @@ function deleteRecord(company, id) {
 
   if (!confirm("Bu kaydı silmek istediğinize emin misiniz?")) return;
 
-  fetch("https://levent-backend-zxel.onrender.com/api/deleteRecord", {
+  fetch(`${API_BASE}/api/deleteRecord`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ company, id })
@@ -537,16 +553,20 @@ function uploadPDF(callback) {
   const formData = new FormData();
   formData.append("pdf", fileInput.files[0]);
 
-  fetch("https://levent-backend-zxel.onrender.com/api/uploadCert", {
-    method: "POST",
-    body: formData
+ fetch(`${API_BASE}/api/uploadCert`, {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => {
+    console.log("UPLOAD RESPONSE:", data);   // ← SADECE BURAYA
+    callback(data.filename);
   })
-    .then(res => res.json())
-    .then(data => callback(data.filename))
-    .catch(err => {
-      console.error("PDF yüklenemedi", err);
-      callback(null);
-    });
+  .catch(err => {
+    console.error("PDF yüklenemedi", err);
+    callback(null);
+  });
+
 }
 
 // ============================================================
@@ -573,8 +593,6 @@ function attachAdminRowEvents() {
 // ============================================================
 //  PDF PREVIEW — YENİ PENCEREDE AÇILIR
 // ============================================================
-
-// Certificate linklerine tıklamayı yakala
 document.addEventListener("click", (e) => {
   if (e.target.tagName === "A" && e.target.closest("td")) {
     const href = e.target.getAttribute("href");
@@ -586,7 +604,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Yeni pencere açıp PDF gösteren fonksiyon
 function openPDFWindow(url) {
   const win = window.open("", "_blank", "width=900,height=700");
 
@@ -611,9 +628,14 @@ function openPDFWindow(url) {
     </html>
   `);
 }
+
+// ============================================================
+//  COMPANY MODAL
+// ============================================================
 document.getElementById("btnAddCompany").addEventListener("click", () => {
   document.getElementById("companyModal").style.display = "flex";
 });
+
 document.getElementById("btnSaveCompany").addEventListener("click", () => {
   const name = document.getElementById("newCompanyName").value.trim();
 
@@ -622,7 +644,6 @@ document.getElementById("btnSaveCompany").addEventListener("click", () => {
     return;
   }
 
-  // Dropdown’a ekle
   const sel = document.getElementById("recCompany");
   const opt = document.createElement("option");
   opt.value = name;
@@ -630,12 +651,11 @@ document.getElementById("btnSaveCompany").addEventListener("click", () => {
   sel.appendChild(opt);
   sel.value = name;
 
-  // Modal kapat
   document.getElementById("companyModal").style.display = "none";
   document.getElementById("newCompanyName").value = "";
   document.getElementById("companyError").textContent = "";
 });
+
 document.getElementById("btnCancelCompany").addEventListener("click", () => {
   document.getElementById("companyModal").style.display = "none";
 });
-
