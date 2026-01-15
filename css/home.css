@@ -3,9 +3,10 @@
 ========================= */
 
 .heroModern {
-  padding: 60px 0;
+  padding: 25px 0;
   position: relative;
 }
+
 
 .heroModern .container {
   max-width: 1100px;
@@ -206,7 +207,7 @@
 @media (max-width: 900px) {
   .heroGlass {
     grid-template-columns: 1fr;
-    padding: 28px;
+    padding: 15px;
   }
 
   .heroTitle {
