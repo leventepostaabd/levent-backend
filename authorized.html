@@ -110,21 +110,20 @@
     <!-- RECORDS TABLE -->
     <div id="recordsSection" class="tableWrapper">
       <table class="recordsTable">
-     <thead>
-  <tr>
-    <th>Vessel</th>
-    <th>Location</th>
-    <th>Test date</th>
-    <th>Device</th>
-    <th>Serial no</th>
-    <th>Certificate</th>
-    <th>Next test</th>
-    <th>Status</th>
-    <th>QR</th> <!-- YENİ EKLEDİK -->
-    <th id="adminActionsHeader" style="display:none;">Actions</th>
-  </tr>
-</thead>
-
+        <thead>
+          <tr>
+            <th>Vessel</th>
+            <th>Location</th>
+            <th>Test date</th>
+            <th>Device</th>
+            <th>Serial no</th>
+            <th>Certificate</th>
+            <th>Next test</th>
+            <th>Status</th>
+            <th>QR</th> <!-- QR kolonu: backend'den gelen qrUrl burada gösterilecek -->
+            <th id="adminActionsHeader" style="display:none;">Actions</th>
+          </tr>
+        </thead>
         <tbody id="recordsBody"></tbody>
       </table>
     </div>
@@ -183,20 +182,21 @@
           <label>Test tarihi</label>
           <input type="date" id="recDate">
 
+          <!-- PDF UPLOAD: backend'deki /api/uploadCert ile çalışacak -->
           <label>PDF Sertifika Yükle</label>
           <input type="file" id="pdfUpload" accept=".pdf">
+          <!-- Bu input'un JS tarafında upload sonrası pdf dosya adını recCert'e yazmasını sağlayacağız -->
 
         </div>
 
         <!-- RIGHT COLUMN -->
         <div class="gridRight">
 
-         <label>Firma</label>
-<div style="display:flex; gap:8px; align-items:center;">
-  <select id="recCompany"></select>
-  <button id="btnAddCompany" class="btnPrimary" style="padding:6px 10px;">+</button>
-</div>
-
+          <label>Firma</label>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <select id="recCompany"></select>
+            <button id="btnAddCompany" class="btnPrimary" style="padding:6px 10px;">+</button>
+          </div>
 
           <label>Lokasyon</label>
           <input type="text" id="recLocation">
@@ -207,8 +207,6 @@
           <label>Sonraki test tarihi</label>
           <input type="date" id="recNextTest">
 
-          <label>Sertifika dosya adı</label>
-          <input type="text" id="recCert" placeholder="cert-xxxx.pdf">
 
         </div>
 
@@ -223,21 +221,21 @@
     </div>
 
     <!-- YENİ FİRMA EKLEME MODALI -->
-<div id="companyModal" class="loginModal">
-  <div class="loginBox" style="width:350px;">
-    <h2>Yeni Firma Ekle</h2>
+    <div id="companyModal" class="loginModal">
+      <div class="loginBox" style="width:350px;">
+        <h2>Yeni Firma Ekle</h2>
 
-    <label>Firma adı</label>
-    <input type="text" id="newCompanyName">
+        <label>Firma adı</label>
+        <input type="text" id="newCompanyName">
 
-    <div class="modalButtons">
-      <button id="btnSaveCompany" class="btnPrimary">Kaydet</button>
-      <button id="btnCancelCompany" class="btnGhost">İptal</button>
+        <div class="modalButtons">
+          <button id="btnSaveCompany" class="btnPrimary">Kaydet</button>
+          <button id="btnCancelCompany" class="btnGhost">İptal</button>
+        </div>
+
+        <p id="companyError" class="loginError"></p>
+      </div>
     </div>
-
-    <p id="companyError" class="loginError"></p>
-  </div>
-</div>
 
   </div>
 </div>
