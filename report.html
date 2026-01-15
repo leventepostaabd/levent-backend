@@ -42,6 +42,12 @@
 </div>
 
 <script>
+  // API BASE (LOCAL / LIVE OTOMATİK ALGILAMA)
+  const API_BASE =
+    window.location.hostname === "localhost"
+      ? "http://localhost:3000"
+      : "https://levent-backend-zxel.onrender.com";
+
   // URL'den id parametresini al
   const urlParams = new URLSearchParams(window.location.search);
   const recordId = urlParams.get("id");
@@ -54,7 +60,7 @@
 
   async function loadRecord(id) {
     try {
-      const res = await fetch("http://localhost:3000/api/getRecords");
+      const res = await fetch(`${API_BASE}/api/getRecords`);
       const data = await res.json();
 
       let found = null;
@@ -71,8 +77,8 @@
       }
 
       // PDF linki
-      const pdfUrl = found.certificate
-        ? `http://localhost:3000/pdf/${found.certificate}`
+      const pdfUrl = found.pdfFilename
+        ? `${API_BASE}/upload/${found.pdfFilename}`
         : null;
 
       document.getElementById("info").innerHTML = `
