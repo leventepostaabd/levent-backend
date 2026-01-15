@@ -1,8 +1,7 @@
-// ============================================================
-//  API BASE (LOCAL / LIVE OTOMATİK ALGILAMA)
-// ============================================================
-const API_BASE = "http://localhost:3000";
-
+const API_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://levent-backend-zxel.onrender.com";
 
 // ============================================================
 //  GLOBAL STATE
@@ -659,3 +658,4 @@ document.getElementById("btnSaveCompany").addEventListener("click", () => {
 document.getElementById("btnCancelCompany").addEventListener("click", () => {
   document.getElementById("companyModal").style.display = "none";
 });
+
