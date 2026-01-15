@@ -540,7 +540,7 @@ function deleteRecord(company, id) {
 }
 
 // ============================================================
-//  PDF UPLOAD
+//  PDF UPLOAD (FINAL)
 // ============================================================
 function uploadPDF(callback) {
   const fileInput = document.getElementById("pdfUpload");
@@ -552,20 +552,23 @@ function uploadPDF(callback) {
   const formData = new FormData();
   formData.append("pdf", fileInput.files[0]);
 
- fetch(`${API_BASE}/api/uploadCert`, {
-  method: "POST",
-  body: formData
-})
-  .then(res => res.json())
-  .then(data => {
-    console.log("UPLOAD RESPONSE:", data);   // ← SADECE BURAYA
-    callback(data.filename);
+  fetch(`${API_BASE}/api/uploadCert`, {
+    method: "POST",
+    body: formData
   })
-  .catch(err => {
-    console.error("PDF yüklenemedi", err);
-    callback(null);
-  });
+    .then(res => res.json())
+    .then(data => {
+      console.log("UPLOAD RESPONSE:", data);
 
+      // ⭐ KRİTİK SATIR — EKSİK OLAN BUYDU
+      uploadedPdfFilename = data.filename;
+
+      callback(data.filename);
+    })
+    .catch(err => {
+      console.error("PDF yüklenemedi", err);
+      callback(null);
+    });
 }
 
 // ============================================================
@@ -658,4 +661,5 @@ document.getElementById("btnSaveCompany").addEventListener("click", () => {
 document.getElementById("btnCancelCompany").addEventListener("click", () => {
   document.getElementById("companyModal").style.display = "none";
 });
+
 
