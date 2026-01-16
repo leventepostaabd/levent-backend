@@ -32,6 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "🔧"
     },
     {
+      /* User will add: assets/works/plc-control.jpg */
+      img: "assets/works/plc-control.jpg",
+      title: { tr: "PLC Yazılım & Arıza Tespiti", en: "PLC Software & Troubleshooting" },
+      desc: {
+        tr: "Program yedekleme, I/O kontrolü, haberleşme sorunları, arıza tespiti ve devreye alma desteği.",
+        en: "Program backup, I/O verification, communication fault tracing, troubleshooting and commissioning support."
+      },
+      service: { tr: "PLC & Otomasyon", en: "PLC & Automation" },
+      icon: "🧩"
+    },
+    {
       img: "assets/works/radar-magnetron-replacement.jpg",
       title: { tr: "Radar Magnetron Değişimi", en: "Radar Magnetron Replacement" },
       desc: {
@@ -126,7 +137,20 @@ document.addEventListener("DOMContentLoaded", () => {
       desc: {
         tr: "SVERKER / SKAVER sistemi ile mekanik, elektriksel ve koruma fonksiyon testleri.",
         en: "Mechanical, electrical and protection function tests with SVERKER / SKAVER system."
-      }
+      },
+      rotator: { tr: "ACB / MCCB Protection Tests", en: "ACB / MCCB Protection Tests" },
+      icon: "✅"
+    },
+    {
+      /* User will add: assets/cert/device-qr-label.jpg */
+      img: "assets/cert/device-qr-label.jpg",
+      title: { tr: "Cihaza Özel QR Etiket Sistemi", en: "Device-Specific QR Label System" },
+      desc: {
+        tr: "Test sonrası cihaza özel QR etiket çıktısı alınır ve ekipmana yapıştırılır; tarama ile rapora ve test tarihçesine ulaşılır.",
+        en: "After testing, a device-specific QR label is printed and attached to the equipment; scanning opens the report and test history."
+      },
+      rotator: { tr: "QR Etiket & İzlenebilirlik", en: "QR Label & Traceability" },
+      icon: "🏷️"
     },
     {
       img: "assets/cert/insulation-testing.jpg",
@@ -134,7 +158,20 @@ document.addEventListener("DOMContentLoaded", () => {
       desc: {
         tr: "Megger ile izolasyon, kontak direnci ve süreklilik ölçümleri; detaylı raporlama.",
         en: "Insulation, contact resistance and continuity tests with Megger; detailed reporting."
-      }
+      },
+      rotator: { tr: "Insulation & Continuity", en: "Insulation & Continuity" },
+      icon: "🧪"
+    },
+    {
+      /* User will add: assets/cert/thermal-camera-survey.jpg */
+      img: "assets/cert/thermal-camera-survey.jpg",
+      title: { tr: "Termal Kamera (IR) İnceleme", en: "Thermal Imaging (IR) Survey" },
+      desc: {
+        tr: "Panolar, bağlantılar ve kritik hatlar termal kamera ile incelenir; sıcak nokta analizi ve raporlama yapılır.",
+        en: "Switchboards, terminations and critical lines are inspected with a thermal camera; hotspot analysis and reporting are provided."
+      },
+      rotator: { tr: "Thermal Imaging (IR)", en: "Thermal Imaging (IR)" },
+      icon: "🌡️"
     },
     {
       img: "assets/cert/class-reporting.jpg",
@@ -142,7 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
       desc: {
         tr: "Tüm testlerin class denetim süreçlerine uygun formatta dokümantasyonu.",
         en: "Documentation of all tests in formats compliant with class survey processes."
-      }
+      },
+      rotator: { tr: "Class Ready Documentation", en: "Class Ready Documentation" },
+      icon: "📄"
     }
   ];
 
@@ -155,6 +194,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("certImage").src = c.img;
     document.getElementById("certTitle").textContent = c.title[lang];
     document.getElementById("certDesc").textContent = c.desc[lang];
+
+    // Left-side rotator line (same structure as Services)
+    const certServiceText = document.getElementById("certServiceText");
+    const certServiceIcon = document.getElementById("certServiceIcon");
+    if (certServiceText) certServiceText.textContent = c.rotator?.[lang] || c.title[lang];
+    if (certServiceIcon) certServiceIcon.textContent = c.icon || "✅";
 
     const bar = document.getElementById("certProgressBar");
     bar.style.width = "0%";

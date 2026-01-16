@@ -25,11 +25,17 @@ body {
 .container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 16px 16px;
 }
 
 .section {
-  margin-top: 48px;
+  margin-top: 12px;
+}
+
+/* Smooth anchor navigation with sticky header */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 92px;
 }
 
 .sectionHeader {
@@ -63,6 +69,8 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
+  /* Give the header more vertical breathing room */
+  padding: 12px 0;
 }
 
 .brand {
@@ -107,13 +115,27 @@ body {
 }
 
 .lang {
-  background: rgba(249, 246, 246, 0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 999px;
+  background: rgba(15,23,42,0.88);
+  border: 1px solid rgba(148,163,184,0.55);
+  color: #e5e7eb;
+  padding: 8px 12px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+.lang:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34,211,238,0.75);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.35);
+}
+
+.lang:active {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.32);
 }
 
 /* =========================
@@ -231,40 +253,100 @@ body {
 }
 
 .btnPrimary {
-  background: linear-gradient(180deg, #3b82f6, #1e40af);
+  /* Corporate blue (less neon, more premium) */
+  background: linear-gradient(180deg, rgba(37,99,235,0.92), rgba(30,58,138,0.92));
   color: #f9fafb;
   border: none;
-  box-shadow: 0 6px 14px rgba(15,23,42,0.65);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+/* =========================
+   LOGO SPLASH
+========================= */
+.logoSplash {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2,6,23,0.92);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 380ms ease;
+}
+
+/* Half-height splash (used when clicking header anchors) */
+.logoSplash.half {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  height: 52vh;
+  border-bottom-left-radius: 22px;
+  border-bottom-right-radius: 22px;
+}
+
+.logoSplash.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.logoSplash img {
+  width: 120px;
+  height: 120px;
+  transform: scale(0.2) rotate(0deg);
+  opacity: 0;
+  /* Make the logo white (same feel as header) */
+  filter: brightness(0) invert(1) drop-shadow(0 20px 40px rgba(0,0,0,0.55));
+}
+
+.logoSplash.show img {
+  animation: logoSplashPop 1650ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.logoSplash.hide {
+  opacity: 0;
+}
+
+@keyframes logoSplashPop {
+  0%   { transform: scale(0.2) rotate(0deg); opacity: 0; }
+  18%  { transform: scale(1.05) rotate(45deg); opacity: 1; }
+  55%  { transform: scale(6.5) rotate(220deg); opacity: 1; }
+  78%  { transform: scale(10.5) rotate(360deg); opacity: 0.85; }
+  100% { transform: scale(10.5) rotate(420deg); opacity: 0; }
 }
 
 .btnPrimary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 22px rgba(15,23,42,0.85);
-  background: linear-gradient(180deg, #60a5fa, #1d4ed8);
+  box-shadow: 0 22px 48px rgba(0,0,0,0.42);
+  background: linear-gradient(180deg, rgba(59,130,246,0.96), rgba(29,78,216,0.96));
 }
 
 .btnPrimary:active {
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(15,23,42,0.7);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.38);
 }
 
 .btnGhost {
-  background: rgba(15,23,42,0.9);
-  border: 1px solid rgba(148,163,184,0.7);
+  background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(15,23,42,0.80));
+  border: 1px solid rgba(148,163,184,0.55);
   color: #e5e7eb;
-  box-shadow: 0 4px 10px rgba(15,23,42,0.6);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.32);
 }
 
 .btnGhost:hover {
   transform: translateY(-3px);
-  background: rgba(31,41,55,0.95);
-  border-color: #38bdf8;
-  box-shadow: 0 10px 22px rgba(15,23,42,0.85);
+  background: linear-gradient(180deg, rgba(31,41,55,0.95), rgba(15,23,42,0.82));
+  border-color: rgba(59,130,246,0.75);
+  box-shadow: 0 20px 44px rgba(0,0,0,0.42);
 }
 
 .btnGhost:active {
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(15,23,42,0.7);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.36);
 }
 
 /* =========================

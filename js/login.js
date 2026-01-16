@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginErrorEl = document.getElementById("loginError");
     const loginSubmit = document.getElementById("loginSubmit");
     const loginClose = document.getElementById("loginClose");
+    const demoEntryBtn = document.getElementById("demoEntryBtn");
 
     // Giriş türü değişince ilgili alanları göster/gizle
     loginTypeEl.addEventListener("change", () => {
@@ -41,6 +42,19 @@ document.addEventListener("DOMContentLoaded", () => {
         loginModal.style.display = "none";
     });
 
+    // Demo (non-authorized) entry
+    if (demoEntryBtn) {
+        demoEntryBtn.addEventListener("click", () => {
+            loginModal.style.display = "none";
+            // Demo mode: müşteri ekranı ile BİREBİR aynı sayfayı açar,
+            // sadece demo (uydurma) kayıtlar gösterilir.
+            localStorage.removeItem("authorizedUser");
+            localStorage.removeItem("loginType");
+            localStorage.setItem("demoMode", "1");
+            window.location.href = "authorized.html";
+        });
+    }
+
     // Giriş butonu
     loginSubmit.addEventListener("click", () => {
         const type = loginTypeEl.value;
@@ -58,27 +72,35 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // COMPANY LOGIN
+        // COMPANY LOGIN (Admin access is granted via COMPANY -> "Levent Marine")
         else if (type === "COMPANY") {
-            selectedUser = loginCompanyEl.value;
-            if (pass !== "company2025") {
-                loginErrorEl.textContent = "Hatalı parola.";
-                return;
-            }
-        }
+            const company = loginCompanyEl.value;
 
-        // ADMIN LOGIN
-        else if (type === "ADMIN") {
-            selectedUser = "ADMIN";
-            if (pass !== "admin2025") {
-                loginErrorEl.textContent = "Hatalı parola.";
-                return;
+            // Admin entry: choose "Levent Marine" from company list, use admin password
+            if (company === "Levent Marine") {
+                if (pass !== "admin2025") {
+                    loginErrorEl.textContent = "Hatalı parola.";
+                    return;
+                }
+                selectedUser = "ADMIN";
+                localStorage.setItem("loginType", "ADMIN");
+            } else {
+                if (pass !== "company2025") {
+                    loginErrorEl.textContent = "Hatalı parola.";
+                    return;
+                }
+                selectedUser = company;
             }
         }
 
         // Başarılı giriş → bilgileri kaydet
         localStorage.setItem("authorizedUser", selectedUser);
-        localStorage.setItem("loginType", type);
+
+        // If admin was selected via COMPANY->Levent Marine, loginType already set to ADMIN above.
+        if (selectedUser !== "ADMIN") {
+            localStorage.setItem("loginType", type);
+        }
+        localStorage.removeItem("demoMode");
 
         // Modal kapat
         loginModal.style.display = "none";

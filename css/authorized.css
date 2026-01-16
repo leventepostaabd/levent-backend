@@ -7,6 +7,42 @@
   box-shadow: 0 20px 60px rgba(0,0,0,0.45);
 }
 
+/* DEMO banner */
+.demoBanner {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.demoBannerTitle {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+
+.demoBannerText {
+  font-size: 15.5px;
+  opacity: 0.95;
+}
+
+.demoBanner b {
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.demoBanner ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.demoBanner li {
+  margin: 4px 0;
+  opacity: 0.92;
+}
+
 .recordsHeader {
   display: flex;
   justify-content: space-between;

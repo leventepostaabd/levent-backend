@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demo | Levent MarineTech</title>
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/authorized.css" />
+  <style>
+    .demoWrap { padding-top: 110px; }
+    .demoGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 900px) { .demoGrid { grid-template-columns: 1fr; } }
+    .demoBadge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.05); font-size: 12px; opacity: 0.95; }
+    .demoTitle { font-size: 22px; margin: 10px 0 6px; }
+    .demoSub { font-size: 13px; opacity: 0.8; line-height: 1.6; margin: 0; }
+    .demoBtns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .demoCardTitle { font-size: 14px; opacity: 0.85; margin: 0 0 10px; }
+    .demoSmall { font-size: 13px; opacity: 0.8; margin: 6px 0 0; }
+    .demoTableWrap { margin-top: 12px; overflow-x: auto; }
+    .demoNote { margin-top: 10px; font-size: 12px; opacity: 0.75; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER (same style as authorized page) -->
+  <div class="header">
+    <div class="container headerInner">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.png" alt="Levent logo" />
+        <div>
+          <div class="name" data-i18n="brand_name">Levent Marine Electro-Technical Services LLC</div>
+          <span class="tag" data-i18n="brand_tag">leventmarinetech.com</span>
+        </div>
+      </a>
+
+      <div class="nav">
+        <a href="index.html#services" data-i18n="nav_services">Services</a>
+        <a href="index.html#certification" data-i18n="nav_certification">Testing &amp; Certification</a>
+        <a href="profile.html" data-i18n="nav_about">About</a>
+        <a href="index.html#contact" data-i18n="nav_contact">Contact</a>
+        <button class="lang" id="btnLangEn">🇺🇸 EN</button>
+        <button class="lang" id="btnLangTr">🇹🇷 TR</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container section demoWrap">
+    <div class="recordsCard">
+      <div class="demoBadge" data-i18n="demo_page_badge">DEMO</div>
+      <div class="demoTitle" data-i18n="demo_page_title">Sistemi Demo Verilerle Gör</div>
+      <p class="demoSub" data-i18n="demo_page_subtitle">
+        Bu sayfadaki tüm firma/gemi/rapor verileri hayalidir. Ama ekranlar ve akış gerçektir.
+      </p>
+
+      <div class="demoBtns">
+        <a class="btnPrimary" href="demo-report.html?id=DEMO-ACB-001" data-i18n="demo_btn_sample">Örnek Raporu Aç</a>
+        <a class="btnGhost" href="index.html" data-i18n="demo_btn_home">Ana Sayfa</a>
+        <a class="btnGhost" href="index.html#certification" data-i18n="demo_btn_authorized">Yetkili Giriş</a>
+      </div>
+
+      <div class="demoGrid" style="margin-top:16px;">
+
+        <div>
+          <div class="demoCardTitle" data-i18n="demo_company_title">Demo Firma</div>
+          <div style="font-size:16px; font-weight:700;" data-i18n="demo_company_name">NorthWave Shipping Ltd.</div>
+          <div class="demoSmall" data-i18n="demo_company_desc">Fleet: 3 gemi • Worldwide</div>
+          <div class="demoNote" data-i18n="demo_note">Demo verileri hayalidir. Sistem akışını göstermek içindir.</div>
+        </div>
+
+        <div>
+          <div class="demoCardTitle" data-i18n="demo_vessels_title">Demo Gemiler</div>
+          <div class="demoTableWrap">
+            <table class="recordsTable">
+              <thead>
+                <tr>
+                  <th data-i18n="demo_th_vessel">Gemi</th>
+                  <th data-i18n="demo_th_type">Tip</th>
+                  <th data-i18n="demo_th_imo">IMO</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>MV North Aurora</td>
+                  <td>Container</td>
+                  <td>IMO 9990001</td>
+                </tr>
+                <tr>
+                  <td>MV North Horizon</td>
+                  <td>Bulk Carrier</td>
+                  <td>IMO 9990002</td>
+                </tr>
+                <tr>
+                  <td>MV North Vega</td>
+                  <td>General Cargo</td>
+                  <td>IMO 9990003</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:18px;">
+        <div class="demoCardTitle" data-i18n="demo_reports_title">Demo Raporlar</div>
+        <div class="demoTableWrap">
+          <table class="recordsTable">
+            <thead>
+              <tr>
+                <th data-i18n="demo_th_reportid">Rapor ID</th>
+                <th data-i18n="demo_th_vessel">Gemi</th>
+                <th data-i18n="demo_th_service">Servis</th>
+                <th data-i18n="demo_th_date">Tarih</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>DEMO-ACB-001</td>
+                <td>MV North Aurora</td>
+                <td>ACB Injection / Trip Test</td>
+                <td>2026-01-05</td>
+                <td><a class="btnGhost btnTiny" href="demo-report.html?id=DEMO-ACB-001" data-i18n="demo_open">Aç</a></td>
+              </tr>
+              <tr>
+                <td>DEMO-IR-014</td>
+                <td>MV North Horizon</td>
+                <td>Insulation Resistance (LV)</td>
+                <td>2026-01-09</td>
+                <td><a class="btnGhost btnTiny" href="demo-report.html?id=DEMO-IR-014" data-i18n="demo_open">Aç</a></td>
+              </tr>
+              <tr>
+                <td>DEMO-PM-022</td>
+                <td>MV North Vega</td>
+                <td>Preventive Maintenance Summary</td>
+                <td>2026-01-12</td>
+                <td><a class="btnGhost btnTiny" href="demo-report.html?id=DEMO-PM-022" data-i18n="demo_open">Aç</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">© 2026 Levent Marine Electro Technical Services.</footer>
+
+  <script src="js/global.js"></script>
+</body>
+</html>

@@ -36,6 +36,9 @@
 <div class="container section">
   <div class="recordsCard">
 
+    <!-- DEMO BANNER (sadece demo modda gösterilir) -->
+    <div id="demoBanner" class="demoBanner" style="display:none;" data-i18n="demo_banner_html"></div>
+
     <!-- ADMIN PANEL -->
     <div id="adminPanel" class="adminPanel" style="display:none;">
       <div class="adminHeader">
@@ -43,17 +46,17 @@
         <p>Test kayıtlarını ekleyebilir, düzenleyebilir ve silebilirsiniz.</p>
       </div>
 
-      <!-- Dashboard / Records Tabs -->
-      <div class="adminTabs">
-        <button id="tabRecords" class="tabButton active">Records</button>
-        <button id="tabDashboard" class="tabButton">Dashboard</button>
-      </div>
-
       <div class="top-bar">
         <button id="btnNewRecord" class="btnPrimary">
           + Yeni Test Kaydı
         </button>
       </div>
+    </div>
+
+    <!-- Records / Dashboard Tabs (TÜM kullanıcılar görür: Admin, Class, Company, Demo) -->
+    <div class="adminTabs">
+      <button id="tabRecords" class="tabButton active">Records</button>
+      <button id="tabDashboard" class="tabButton">Dashboard</button>
     </div>
 
     <!-- FILTER BAR -->

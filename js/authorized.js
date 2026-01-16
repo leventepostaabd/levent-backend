@@ -10,6 +10,66 @@ let shipRecords = {};
 let currentUser = null;
 let loginType = null;
 let editRecordInfo = null;
+let demoMode = false;
+
+// ============================================================
+//  DEMO DATA (müşterinin gördüğü ekranla birebir aynı tasarım)
+// ============================================================
+const DEMO_COMPANY = "NorthWave Shipping Ltd.";
+const DEMO_RECORDS = {
+  [DEMO_COMPANY]: [
+    {
+      id: "DEMO-ACB-001",
+      ship: "MV North Aurora",
+      location: "Istanbul / TR",
+      date: "2025-10-14",
+      device: "ACB Test",
+      serial: "ACB-NT-2025-001",
+      pdfFilename: "DEMO-ACB-001.pdf",
+      nextTest: "2026-10-14"
+    },
+    {
+      id: "DEMO-BUS-002",
+      ship: "MV North Horizon",
+      location: "Hamburg / DE",
+      date: "2025-09-02",
+      device: "Busbar Test",
+      serial: "BUS-IR-2025-110",
+      pdfFilename: "DEMO-BUS-002.pdf",
+      nextTest: "2026-09-02"
+    },
+    {
+      id: "DEMO-INS-003",
+      ship: "MV North Vega",
+      location: "Rotterdam / NL",
+      date: "2025-11-20",
+      device: "Insulation & Continuity Test",
+      serial: "INS-500V-2025-044",
+      pdfFilename: "DEMO-INS-003.pdf",
+      nextTest: "2026-11-20"
+    },
+    {
+      id: "DEMO-THM-004",
+      ship: "MV North Atlas",
+      location: "Piraeus / GR",
+      date: "2025-08-08",
+      device: "Thermal Imaging (IR)",
+      serial: "THERM-IR-2025-031",
+      pdfFilename: "DEMO-THM-004.pdf",
+      nextTest: "2026-08-08"
+    },
+    {
+      id: "DEMO-ELT-005",
+      ship: "MV North Delta",
+      location: "Singapore / SG",
+      date: "2025-12-03",
+      device: "Earth Fault Loop Test",
+      serial: "EFL-2025-073",
+      pdfFilename: "DEMO-ELT-005.pdf",
+      nextTest: "2026-12-03"
+    }
+  ]
+};
 
 // ============================================================
 //  STATUS FUNCTION
@@ -34,12 +94,33 @@ function getStatus(nextTestDate) {
 //  PAGE LOAD
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
-  currentUser = localStorage.getItem("authorizedUser");
-  loginType = localStorage.getItem("loginType");
+  demoMode = localStorage.getItem("demoMode") === "1";
 
-  if (!currentUser || !loginType) {
-    window.location.href = "index.html";
-    return;
+  if (demoMode) {
+    // Demo: müşteri dashboard'ı ile aynı sayfa, uydurma kayıtlar
+    currentUser = DEMO_COMPANY;
+    loginType = "COMPANY";
+    shipRecords = DEMO_RECORDS;
+
+    const demoBanner = document.getElementById("demoBanner");
+    if (demoBanner) demoBanner.style.display = "block";
+
+    // Demo'da admin panel kesinlikle görünmesin
+    const adminPanel = document.getElementById("adminPanel");
+    if (adminPanel) adminPanel.style.display = "none";
+
+    // Demo verileriyle başlat
+    initForUser();
+    initFilters();
+    initDashboardTab();
+  } else {
+    currentUser = localStorage.getItem("authorizedUser");
+    loginType = localStorage.getItem("loginType");
+
+    if (!currentUser || !loginType) {
+      window.location.href = "index.html";
+      return;
+    }
   }
 
   // CLASS / COMPANY → admin butonlarını kaldır
@@ -52,21 +133,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const adminActionsHeader = document.getElementById("adminActionsHeader");
     if (adminActionsHeader) adminActionsHeader.style.display = "none";
+
+    // Firma ekleme (sadece admin)
+    const companyModal = document.getElementById("companyModal");
+    if (companyModal) companyModal.remove();
   }
 
-  // Kayıtları backend'den çek
-  fetch(`${API_BASE}/api/getRecords`)
-    .then(res => res.json())
-    .then(data => {
-      shipRecords = data || {};
-      initForUser();
-      initFilters();
-      initDashboardTab();
-    })
-    .catch(err => {
-      console.error("Kayıtlar yüklenemedi", err);
-      document.getElementById("noRecords").style.display = "block";
-    });
+  // Kayıtları backend'den çek (demo modda çekme)
+  if (!demoMode) {
+    fetch(`${API_BASE}/api/getRecords`)
+      .then(res => res.json())
+      .then(data => {
+        shipRecords = data || {};
+        initForUser();
+        initFilters();
+        initDashboardTab();
+      })
+      .catch(err => {
+        console.error("Kayıtlar yüklenemedi", err);
+        document.getElementById("noRecords").style.display = "block";
+      });
+  }
 
   // Modal kapatma
   const btnCancel = document.getElementById("btnCancelRecord");
@@ -186,7 +273,9 @@ function renderTable(records) {
      <td>
   ${
     rec.id
-      ? `<a href="${API_BASE}/label/${rec.id}" target="_blank" class="btnGhost btnTiny">Yazdır</a>`
+      ? (demoMode
+          ? `<a href="label-demo.html?id=${encodeURIComponent(rec.id)}" target="_blank" class="btnGhost btnTiny">Yazdır</a>`
+          : `<a href="${API_BASE}/label/${rec.id}" target="_blank" class="btnGhost btnTiny">Yazdır</a>`)
       : ""
   }
 </td>

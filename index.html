@@ -1,7 +1,6 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="css/login.css" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title data-i18n="brand_name">Levent Marine Electro Technical Services</title>
@@ -9,8 +8,14 @@
   <link rel="icon" href="assets/logo.png" />
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/login.css" />
 </head>
 <body id="top">
+
+<!-- LOGO SPLASH (first load) -->
+<div id="logoSplash" class="logoSplash" aria-hidden="true">
+  <img src="assets/logo.png" alt="Levent MarineTech" />
+</div>
 
 <!-- HEADER -->
 <header class="header">
@@ -36,54 +41,48 @@
   </div>
 </header>
 
-<!-- CERTIFICATION (SERVICES İLE AYNI PREMIUM YAPI) -->
+<!-- CERTIFICATION ROTATOR -->
 <section class="heroModern" id="certification">
   <div class="container">
     <div class="heroGlass">
 
       <!-- LEFT -->
-<div class="heroLeft">
-  <div class="heroBadge" data-i18n="cert_badge">Test & Sertifikasyon</div>
+      <div class="heroLeft">
+        <div class="heroBadge" data-i18n="cert_badge">Test & Sertifikasyon</div>
 
-  <h1 class="heroTitle" data-i18n="cert_title">
-    Test & Sertifika Hizmetleri
-  </h1>
+        <h1 class="heroTitle" data-i18n="cert_title">
+          Test & Sertifika Hizmetleri
+        </h1>
 
-  <p class="heroSubtitle" data-i18n="cert_subtitle">
-    Hizmet verilen gemilerde kullanılan tüm ölçüm ve test ekipmanları kalibrasyon sertifikalı olup,
-    yürütülen çalışmalar class denetimlerinde kabul gören yöntem ve dokümantasyon ile desteklenir.
-  </p>
+        <p class="heroSubtitle" data-i18n="cert_subtitle">
+          Hizmet verilen gemilerde kullanılan tüm ölçüm ve test ekipmanları kalibrasyon sertifikalı olup,
+          yürütülen çalışmalar class denetimlerinde kabul gören yöntem ve dokümantasyon ile desteklenir.
+        </p>
 
- 
+        <!-- SAME STRUCTURE AS SERVICES (ROTATOR + SUPPORT BADGE) -->
+        <div class="heroServiceRotator">
+          <span id="certServiceIcon">✅</span>
+          <span id="certServiceText" data-i18n="cert_rotator_default">Class Ready Testing</span>
+        </div>
 
-  <!-- BUTONLAR -->
-  <div class="heroButtons">
-    <a href="#contact" class="btnPrimary" data-i18n="cert_btn_request">
-      Test & Sertifika Talebi Oluştur
-    </a>
+        <div class="heroButtons">
+          <a href="#contact" class="btnPrimary" data-i18n="cert_btn_request">
+            Test & Sertifika Talebi Oluştur
+          </a>
+         <button class="btnPrimary" id="authorizedBtn">
 
-    <button class="btnPrimary" id="authorizedBtn">
-      Yetkili Kullanıcı Girişi
-    </button>
-  </div>
+  Yetkili Kullanıcı Girişi
+</button>
+        </div>
 
-  <!-- TEK AÇIKLAMA (TR/EN OTOMATİK) -->
-  <p class="loginInfo" data-i18n="login_info">
-    This panel provides secure access to all vessel-based test records performed by our team.
-    Authorized users can view test dates, device serial numbers, certificates, and upcoming
-    test deadlines. Designed to ensure full transparency for class surveys and internal audits.
-  </p>
-   <!-- 7/24 badge ÜSTE ALINDI -->
-  <div class="heroSupportBadge" data-i18n="hero_support">
-    7/24 Remote & Onboard Support
-  </div>
-</div>
+        <div class="heroSupportBadge" data-i18n="hero_support">
+          7/24 Remote & Onboard Support
+        </div>
+      </div>
 
-
-      <!-- RIGHT (SERVICES İLE AYNI KART YAPISI) -->
+      <!-- RIGHT ROTATOR -->
       <div class="heroRight">
         <div class="heroWorkCard">
-
           <div class="heroWorkImage">
             <img id="certImage" src="assets/cert/acb-mccb-test.jpg" alt="">
           </div>
@@ -98,14 +97,12 @@
           <div class="heroProgress">
             <div id="certProgressBar"></div>
           </div>
-
         </div>
       </div>
 
     </div>
   </div>
 </section>
-
 
 <!-- MAIN HERO ROTATOR -->
 <section class="heroModern" id="services">
@@ -117,7 +114,7 @@
         <div class="heroBadge" data-i18n="hero_badge">Marine Electro-Technical Services</div>
 
         <h1 class="heroTitle" data-i18n="hero_title">
-          Class Ready <br> Electro-Technical Services
+          Marine <br> Electro-Technical Services
         </h1>
 
         <p class="heroSubtitle" data-i18n="hero_subtitle">
@@ -167,10 +164,7 @@
 <!-- CONTACT -->
 <section class="section" id="contact">
   <div class="container">
-    <p data-i18n="contact_desc">
-      Proje, arıza veya denetim öncesi ihtiyaçlarınız için, USA ve Türkiye lokasyonlarından
-      remote veya onboard destek sağlanır.
-    </p>
+    <div class="contactSupportBadge heroBadge" data-i18n="contact_desc"></div>
 
     <div class="contactWrapper">
 
@@ -179,7 +173,6 @@
         <div class="contactInfoBlock">
           <h3 data-i18n="contact_usa_title">USA</h3>
           <p data-i18n="contact_usa_desc">
-            Wyoming Registered Agent Services LLC<br>
             32 N Gould St, Sheridan, WY 82801<br>
             Tel: <a href="tel:+16193840403">+1 619 384 04 03</a>
           </p>
@@ -195,15 +188,11 @@
         </div>
 
         <div class="contactButtons">
-          <a class="btnPrimary" href="https://wa.me/16193840403" target="_blank">
-            💬 <span data-i18n="btn_whatsapp_us">WhatsApp (USA)</span>
+          <a id="whatsappBtn" class="btnPrimary" href="https://wa.me/16193840403" target="_blank" rel="noopener">
+            💬 <span data-i18n="btn_whatsapp">WhatsApp</span>
           </a>
 
-          <a class="btnGhost" href="https://wa.me/905376507776" target="_blank">
-            💬 <span data-i18n="btn_whatsapp_tr">WhatsApp (TR)</span>
-          </a>
-
-          <a class="btnGhost" href="mailto:info@leventmarinetech.com">
+          <a id="emailBtn" class="btnPrimary" href="mailto:info@leventmarinetech.com">
             ✉️ <span data-i18n="btn_email">Email</span>
           </a>
         </div>
@@ -215,6 +204,7 @@
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.684333!2d-106.9800!3d44.7972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5334f91a1f000001%3A0x4b7ce!2sSheridan%2C%20WY!5e0!3m2!1str!2sus!4v1700000000000"
           style="border:0;" allowfullscreen loading="lazy">
         </iframe>
+        <p class="contactMotto" data-i18n="contact_motto"></p>
       </div>
 
     </div>
@@ -240,7 +230,6 @@
     <select id="loginType">
       <option value="CLASS">Class Access</option>
       <option value="COMPANY">Company Representative</option>
-      <option value="ADMIN">ADMIN</option>
     </select>
 
     <!-- 2) Class listesi (sadece CLASS seçilince görünür) -->
@@ -281,6 +270,16 @@
 
 
     <p id="loginError" class="loginError"></p>
+
+    <!-- Demo access for non-authorized visitors -->
+    <div class="loginDemoBox">
+      <button id="demoEntryBtn" type="button" class="btnGhost" data-i18n="demo_btn">
+        Demo'yu Gör (Yetkili Değilim)
+      </button>
+      <p class="loginInfo" style="margin:0; opacity:.75" data-i18n="demo_note">
+        Demo verileri hayalidir. Sistem akışını göstermek içindir.
+      </p>
+    </div>
   </div>
 </div>
 
