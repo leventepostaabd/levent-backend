@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(() => splash.classList.add("show"));
 
     // fade out near the end, then remove
-    window.setTimeout(() => splash.classList.add("hide"), 1550);
+    window.setTimeout(() => splash.classList.add("hide"), 1700);
     window.setTimeout(() => {
       splash.remove();
       if (typeof onDone === "function") onDone();
@@ -257,10 +257,8 @@ nav_about: "About",
         if (!target) return;
 
         e.preventDefault();
-        replayLogoSplash({
-          mode: "half",
-          onDone: () => target.scrollIntoView({ behavior: "smooth" })
-        });
+        target.scrollIntoView({ behavior: "auto" });
+        replayLogoSplash({ mode: "half" });
       });
     });
   }
