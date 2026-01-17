@@ -18,7 +18,7 @@
 #services,
 #certification,
 #contact {
-  scroll-margin-top: 92px;
+  scroll-margin-top: calc(var(--header-height) + var(--header-offset));
 }
 
 .heroModern .container {
@@ -54,8 +54,12 @@
   letter-spacing: 0.3px;
 }
 
+.heroLeft .heroBadge {
+  font-size: 8px;
+}
+
 .heroTitle {
-  font-size: 42px;
+  font-size: 26px;
   line-height: 1.2;
   font-weight: 700;
 }
@@ -70,7 +74,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 20px;
+  font-size: 28px;
   margin-top: 10px;
   font-weight: 600;
 }
@@ -248,7 +252,11 @@
   }
 
   .heroTitle {
-    font-size: 32px;
+    font-size: 24px;
+  }
+
+  .heroServiceRotator {
+    font-size: 22px;
   }
 
   .contactWrapper {
@@ -258,7 +266,15 @@
 
 @media (max-width: 700px) {
   .heroTitle {
-    font-size: 26px;
+    font-size: 22px;
+  }
+
+  .heroLeft .heroBadge {
+    font-size: 9px;
+  }
+
+  .heroServiceRotator {
+    font-size: 20px;
   }
 
   .heroButtons {

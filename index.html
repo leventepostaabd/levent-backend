@@ -69,9 +69,8 @@
           <a href="#contact" class="btnPrimary" data-i18n="cert_btn_request">
             Test & Sertifika Talebi Oluştur
           </a>
-         <button class="btnPrimary" id="authorizedBtn">
-
-  Yetkili Kullanıcı Girişi
+         <button class="btnPrimary" id="authorizedBtn" data-i18n="cert_btn_login">
+  Test Records
 </button>
         </div>
 
@@ -223,18 +222,18 @@
 <!-- LOGIN MODAL -->
 <div id="loginModal" class="loginModal">
   <div class="loginBox">
-    <h2>Yetkili Kullanıcı Girişi</h2>
+    <h2 data-i18n="login_modal_title">Test Records Access</h2>
 
     <!-- 1) Giriş Türü -->
-    <label>Giriş Türü</label>
+    <label data-i18n="login_type_label">Access Type</label>
     <select id="loginType">
-      <option value="CLASS">Class Access</option>
-      <option value="COMPANY">Company Representative</option>
+      <option value="CLASS" data-i18n="login_type_class">Class Access</option>
+      <option value="COMPANY" data-i18n="login_type_company">Company Representative</option>
     </select>
 
     <!-- 2) Class listesi (sadece CLASS seçilince görünür) -->
     <div id="classSelectBox" style="display:none; margin-top:10px;">
-      <label>Class Seç</label>
+      <label data-i18n="login_class_label">Select Class</label>
       <select id="loginClass">
         <option value="TL">Türk Loydu (TL)</option>
         <option value="BV">Bureau Veritas (BV)</option>
@@ -248,7 +247,7 @@
 
     <!-- 3) Company Representative (sadece COMPANY seçilince görünür) -->
  <div id="companySelectBox" style="display:none; margin-top:10px;">
-  <label>Firma Seç</label>
+  <label data-i18n="login_company_label">Select Company</label>
   <select id="loginCompany">
     <option value="TP Offshore">TP Offshore</option>
     <option value="MEDLOG">MEDLOG</option>
@@ -260,13 +259,13 @@
 
 
     <!-- 4) Parola -->
-    <label style="margin-top:10px;">Parola</label>
-    <input type="password" id="loginPass" placeholder="Parola">
+    <label style="margin-top:10px;" data-i18n="login_password_label">Password</label>
+    <input type="password" id="loginPass" placeholder="Password" data-i18n-placeholder="login_password_placeholder">
 
     <!-- Buttons -->
-   <button id="loginSubmit" type="button" class="btnPrimary">Giriş Yap</button>
+   <button id="loginSubmit" type="button" class="btnPrimary" data-i18n="login_submit">Sign In</button>
 
- <button id="loginClose" type="button" class="btnGhost">Kapat</button>
+ <button id="loginClose" type="button" class="btnGhost" data-i18n="login_close">Close</button>
 
 
     <p id="loginError" class="loginError"></p>
