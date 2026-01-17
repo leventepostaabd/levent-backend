@@ -53,8 +53,19 @@ nav_about: "Hakkımızda",
       cert_title: "Test & Sertifika Hizmetleri",
       cert_subtitle: "Tüm test ve ölçümler class denetimlerinde kabul gören yöntem ve dokümantasyon ile gerçekleştirilir.",
       cert_btn_request: "Test & Sertifika Talebi Oluştur",
-      cert_btn_login: "Yetkili Kullanıcı Girişi",
+      cert_btn_login: "Test Kayıtları",
       login_info: "Bu panel, tarafımızca gerçekleştirilen tüm testlerin gemi bazında kayıt altına alındığı güvenli bir erişim sistemidir. Yetkili kullanıcılar; test tarihleri, cihaz seri numaraları, sertifikalar ve yaklaşan test sürelerini görüntüleyebilir. Class denetimleri ve iç denetimler için tam şeffaflık sağlar.",
+      login_modal_title: "Test Kayıtları Girişi",
+      login_type_label: "Giriş Türü",
+      login_type_class: "Class Erişimi",
+      login_type_company: "Firma Temsilcisi",
+      login_class_label: "Class Seç",
+      login_company_label: "Firma Seç",
+      login_password_label: "Parola",
+      login_password_placeholder: "Parola",
+      login_submit: "Giriş Yap",
+      login_close: "Kapat",
+      login_error_wrong_password: "Hatalı parola.",
 
       /* DEMO */
       demo_btn: "Demo'yu Gör (Yetkili Değilim)",
@@ -133,8 +144,19 @@ nav_about: "About",
       cert_title: "Testing & Certification Services",
       cert_subtitle: "All tests and measurements are performed using class-approved methods and documentation.",
       cert_btn_request: "Request Test & Certification",
-      cert_btn_login: "Authorized User Login",
+      cert_btn_login: "Test Records",
       login_info: "This panel provides secure access to all vessel-based test records performed by our team. Authorized users can view test dates, device serial numbers, certificates, and upcoming test deadlines. Designed to ensure full transparency for class surveys and internal audits.",
+      login_modal_title: "Test Records Access",
+      login_type_label: "Access Type",
+      login_type_class: "Class Access",
+      login_type_company: "Company Representative",
+      login_class_label: "Select Class",
+      login_company_label: "Select Company",
+      login_password_label: "Password",
+      login_password_placeholder: "Password",
+      login_submit: "Sign In",
+      login_close: "Close",
+      login_error_wrong_password: "Incorrect password.",
 
       /* DEMO */
       demo_btn: "View Demo (Not Authorized)",
@@ -189,6 +211,17 @@ nav_about: "About",
     }
   };
 
+  const header = document.querySelector("header.header");
+
+  const updateHeaderMetrics = () => {
+    if (!header) return;
+    const height = header.offsetHeight;
+    document.documentElement.style.setProperty("--header-height", `${height}px`);
+  };
+
+  updateHeaderMetrics();
+  window.addEventListener("resize", updateHeaderMetrics);
+
   /* =========================
      APPLY LANGUAGE
   ========================== */
@@ -197,6 +230,13 @@ nav_about: "About",
       const key = el.getAttribute("data-i18n");
       if (translations[lang] && translations[lang][key]) {
         el.innerHTML = translations[lang][key];
+      }
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (translations[lang] && translations[lang][key]) {
+        el.setAttribute("placeholder", translations[lang][key]);
       }
     });
 
@@ -246,7 +286,6 @@ nav_about: "About",
   /* =========================
      HEADER ANCHOR NAV + SPLASH
   ========================== */
-  const header = document.querySelector("header.header");
   if (header) {
     header.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener("click", (e) => {

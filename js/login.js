@@ -18,6 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginSubmit = document.getElementById("loginSubmit");
     const loginClose = document.getElementById("loginClose");
     const demoEntryBtn = document.getElementById("demoEntryBtn");
+    const errorMessages = {
+        tr: "Hatalı parola.",
+        en: "Incorrect password."
+    };
+
+    const getLang = () => {
+        return localStorage.getItem("siteLang") || document.documentElement.lang || "en";
+    };
 
     // Giriş türü değişince ilgili alanları göster/gizle
     loginTypeEl.addEventListener("change", () => {
@@ -67,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (type === "CLASS") {
             selectedUser = loginClassEl.value;
             if (pass !== "class2025") {
-                loginErrorEl.textContent = "Hatalı parola.";
+                loginErrorEl.textContent = errorMessages[getLang()] || errorMessages.en;
                 return;
             }
         }
@@ -79,14 +87,14 @@ document.addEventListener("DOMContentLoaded", () => {
             // Admin entry: choose "Levent Marine" from company list, use admin password
             if (company === "Levent Marine") {
                 if (pass !== "admin2025") {
-                    loginErrorEl.textContent = "Hatalı parola.";
+                    loginErrorEl.textContent = errorMessages[getLang()] || errorMessages.en;
                     return;
                 }
                 selectedUser = "ADMIN";
                 localStorage.setItem("loginType", "ADMIN");
             } else {
                 if (pass !== "company2025") {
-                    loginErrorEl.textContent = "Hatalı parola.";
+                    loginErrorEl.textContent = errorMessages[getLang()] || errorMessages.en;
                     return;
                 }
                 selectedUser = company;
