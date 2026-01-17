@@ -257,10 +257,8 @@ nav_about: "About",
         if (!target) return;
 
         e.preventDefault();
-        replayLogoSplash({
-          mode: "half",
-          onDone: () => target.scrollIntoView({ behavior: "smooth" })
-        });
+        target.scrollIntoView({ behavior: "auto" });
+        replayLogoSplash({ mode: "half" });
       });
     });
   }
